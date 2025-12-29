@@ -39,7 +39,6 @@ function QuizScreen({
   const [feedback, setFeedback] = useState('')
   const [showDimmer, setShowDimmer] = useState(false)
 
-  // 難易度に応じた範囲を取得
   const getRange = useCallback(() => {
     if (difficulty === 'custom') {
       return customRange
@@ -56,7 +55,6 @@ function QuizScreen({
     }
   }, [difficulty, customRange])
 
-  // 新しい問題を生成
   const generateProblem = useCallback((): Problem => {
     const range = getRange()
     const operator: '+' | '-' = Math.random() > 0.5 ? '+' : '-'
@@ -66,7 +64,6 @@ function QuizScreen({
       num1 = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
       num2 = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
     } else {
-      // 引き算の場合、答えが負にならないようにする
       num1 = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
       num2 = Math.floor(Math.random() * num1) + 1
     }
@@ -78,40 +75,33 @@ function QuizScreen({
 
   const [problem, setProblem] = useState<Problem>(() => generateProblem())
 
-  // 問題を初期化（難易度変更時）
   useEffect(() => {
     const newProblem = generateProblem()
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setProblem(newProblem)
-    // Only start timer if not showing start dimmer
     if (!showStartDimmer) {
       setStartTime(Date.now())
     }
   }, [difficulty, customRange, generateProblem, showStartDimmer])
 
-
-  // showDimmerの変更を親に通知（AppのisFeedbackDimmer管理用）
   useEffect(() => {
     if (onDimmerChange) {
       onDimmerChange(showDimmer)
     }
   }, [showDimmer, onDimmerChange])
 
-  // Start timer when dimmer is dismissed
   const handleStartClick = () => {
     onDimmerStart()
     setStartTime(Date.now())
     setElapsedTime(0)
   }
 
-  // 答えを確認
   const checkAnswer = () => {
     if (userAnswer === '') return
 
     const isCorrect = parseInt(userAnswer) === problem.answer
   const responseTime = startTime ? Date.now() - startTime : 0
 
-    // Show dimmer with feedback
     setShowDimmer(true)
 
     if (isCorrect) {
@@ -133,7 +123,6 @@ function QuizScreen({
     }
   }
 
-  // 次の問題へ
   const nextProblem = () => {
     setProblem(generateProblem())
     setUserAnswer('')
@@ -142,17 +131,14 @@ function QuizScreen({
     setElapsedTime(0)
   }
 
-  // 数字ボタンクリック
   const handleNumberClick = (num: number) => {
     setUserAnswer(prev => prev + num.toString())
   }
 
-  // 削除ボタン
   const handleDelete = () => {
     setUserAnswer(prev => prev.slice(0, -1))
   }
 
-  // クリアボタン
   const handleClear = () => {
     setUserAnswer('')
   }
