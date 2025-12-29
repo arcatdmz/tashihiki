@@ -1,0 +1,141 @@
+.settings {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.settings h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.setting-group {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9ff;
+  border-radius: 15px;
+}
+
+.setting-group h3 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.difficulty-buttons,
+.timer-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.difficulty-buttons button,
+.timer-toggle button {
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: white;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  touch-action: manipulation;
+}
+
+.difficulty-buttons button:active,
+.timer-toggle button:active {
+  transform: scale(0.98);
+}
+
+.difficulty-buttons button.active,
+.timer-toggle button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.custom-range {
+  background: #fff4e6;
+}
+
+.range-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.range-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.range-input label {
+  font-weight: bold;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.range-input input {
+  padding: 1rem;
+  font-size: 1.5rem;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.info-box {
+  background: #e8f4fd;
+  padding: 1.5rem;
+  border-radius: 15px;
+  border-left: 5px solid #667eea;
+}
+
+.info-box p {
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.info-box ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.info-box li {
+  padding: 0.5rem 0;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.info-box li:before {
+  content: "✓ ";
+  color: #667eea;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .settings h2 {
+    font-size: 1.5rem;
+  }
+
+  .setting-group h3 {
+    font-size: 1.2rem;
+  }
+
+  .difficulty-buttons button,
+  .timer-toggle button {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .range-input input {
+    font-size: 1.2rem;
+  }
+}
