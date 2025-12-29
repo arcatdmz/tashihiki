@@ -11,14 +11,14 @@ interface WelcomeProps {
   onStart: () => void
 }
 
-function Welcome({ 
-  difficulty, 
+function Welcome({
+  difficulty,
   setDifficulty,
   showTimer,
   setShowTimer,
   customRange,
   setCustomRange,
-  onStart
+  onStart,
 }: WelcomeProps) {
   const handleCustomMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 1
@@ -35,13 +35,16 @@ function Welcome({
       <div className="welcome-content">
         <div className="welcome-intro">
           <h2>👋 ようこそ！</h2>
-          <p>たしひきアプリへようこそ！<br />
-          たしざんとひきざんのれんしゅうができるよ。</p>
+          <p>
+            たしひきアプリへようこそ！
+            <br />
+            たしざんとひきざんのれんしゅうができるよ。
+          </p>
         </div>
 
         <div className="welcome-settings">
           <h3>⚙️ せってい</h3>
-          
+
           <div className="setting-group">
             <h4>むずかしさ</h4>
             <div className="difficulty-buttons">
