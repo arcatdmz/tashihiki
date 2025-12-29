@@ -33,7 +33,7 @@ function QuizScreen({
   startTime,
   setStartTime,
   setElapsedTime,
-  onDimmerChange
+  onDimmerChange,
 }: QuizScreenProps) {
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
@@ -58,7 +58,7 @@ function QuizScreen({
   const generateProblem = useCallback((): Problem => {
     const range = getRange()
     const operator: '+' | '-' = Math.random() > 0.5 ? '+' : '-'
-    
+
     let num1: number, num2: number
     if (operator === '+') {
       num1 = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
@@ -100,7 +100,7 @@ function QuizScreen({
     if (userAnswer === '') return
 
     const isCorrect = parseInt(userAnswer) === problem.answer
-  const responseTime = startTime ? Date.now() - startTime : 0
+    const responseTime = startTime ? Date.now() - startTime : 0
 
     setShowDimmer(true)
 
@@ -132,11 +132,11 @@ function QuizScreen({
   }
 
   const handleNumberClick = (num: number) => {
-    setUserAnswer(prev => prev + num.toString())
+    setUserAnswer((prev) => prev + num.toString())
   }
 
   const handleDelete = () => {
-    setUserAnswer(prev => prev.slice(0, -1))
+    setUserAnswer((prev) => prev.slice(0, -1))
   }
 
   const handleClear = () => {
@@ -162,37 +162,97 @@ function QuizScreen({
                 <span className={styles['operator']}>{problem.operator}</span>
                 <span className={styles['number']}>{problem.num2}</span>
                 <span className={styles['equals']}>=</span>
-                <span className={styles['answer-box']}>{userAnswer || '?'}</span>
+                <span className={styles['answer-box']}>
+                  {userAnswer || '?'}
+                </span>
               </>
             )}
           </div>
         </div>
         <div className={styles['number-pad']}>
-          {[1,2,3,4,5,6,7,8,9].map(num => (
-            <button key={num} className={styles['number-button']} onClick={() => handleNumberClick(num)}>{num}</button>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+            <button
+              key={num}
+              className={styles['number-button']}
+              onClick={() => handleNumberClick(num)}
+            >
+              {num}
+            </button>
           ))}
-          <button className={[styles['number-button'], styles['clear']].join(' ')} onClick={handleClear}>クリア</button>
-          <button className={styles['number-button']} onClick={() => handleNumberClick(0)}>0</button>
-          <button className={[styles['number-button'], styles['delete']].join(' ')} onClick={handleDelete}>← けす</button>
+          <button
+            className={[styles['number-button'], styles['clear']].join(' ')}
+            onClick={handleClear}
+          >
+            クリア
+          </button>
+          <button
+            className={styles['number-button']}
+            onClick={() => handleNumberClick(0)}
+          >
+            0
+          </button>
+          <button
+            className={[styles['number-button'], styles['delete']].join(' ')}
+            onClick={handleDelete}
+          >
+            ← けす
+          </button>
         </div>
-        <button className={styles['check-button']} onClick={checkAnswer}>✓ こたえる</button>
-        <button className={styles['finish-button']} onClick={onFinish}>⏹️ おわる</button>
+        <button className={styles['check-button']} onClick={checkAnswer}>
+          ✓ こたえる
+        </button>
+        <button className={styles['finish-button']} onClick={onFinish}>
+          ⏹️ おわる
+        </button>
       </div>
       {showDimmer && (
         <div className={styles['feedback-dimmer']}>
-          <div className={[
-            styles['feedback-overlay'],
-            feedback.includes('🎉') ? styles['correct'] : styles['wrong']
-          ].join(' ')}>
+          <div
+            className={[
+              styles['feedback-overlay'],
+              feedback.includes('🎉') ? styles['correct'] : styles['wrong'],
+            ].join(' ')}
+          >
             {(() => {
-              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/;
-              const match = feedback.match(emojiRegex);
+              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/
+              const match = feedback.match(emojiRegex)
               if (match) {
-                const emoji = match[0];
-                const message = feedback.replace(emoji, '').trim();
-                return <><div style={{ fontSize: '4rem', textAlign: 'center', marginBottom: '0.5rem' }}>{emoji}</div><div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{message}</div></>;
+                const emoji = match[0]
+                const message = feedback.replace(emoji, '').trim()
+                return (
+                  <>
+                    <div
+                      style={{
+                        fontSize: '4rem',
+                        textAlign: 'center',
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      {emoji}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '1.5rem',
+                        textAlign: 'left',
+                        whiteSpace: 'pre-line',
+                      }}
+                    >
+                      {message}
+                    </div>
+                  </>
+                )
               } else {
-                return <div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{feedback}</div>;
+                return (
+                  <div
+                    style={{
+                      fontSize: '1.5rem',
+                      textAlign: 'left',
+                      whiteSpace: 'pre-line',
+                    }}
+                  >
+                    {feedback}
+                  </div>
+                )
               }
             })()}
           </div>
@@ -200,7 +260,12 @@ function QuizScreen({
       )}
       {showStartDimmer && (
         <div className={styles['start-dimmer']}>
-          <button className={styles['start-dimmer-button']} onClick={handleStartClick}>🚀 はじめる</button>
+          <button
+            className={styles['start-dimmer-button']}
+            onClick={handleStartClick}
+          >
+            🚀 はじめる
+          </button>
         </div>
       )}
     </>

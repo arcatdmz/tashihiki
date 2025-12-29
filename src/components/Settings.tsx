@@ -10,14 +10,14 @@ interface SettingsProps {
   onBack: () => void
 }
 
-function Settings({ 
-  difficulty, 
-  setDifficulty, 
-  showTimer, 
+function Settings({
+  difficulty,
+  setDifficulty,
+  showTimer,
   setShowTimer,
   customRange,
   setCustomRange,
-  onBack
+  onBack,
 }: SettingsProps) {
   const handleCustomMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 1
@@ -37,25 +37,25 @@ function Settings({
         <h3>むずかしさ</h3>
         <div className={styles['difficulty-buttons']}>
           <button
-          className={difficulty === 'easy' ? styles.active : ''}
+            className={difficulty === 'easy' ? styles.active : ''}
             onClick={() => setDifficulty('easy')}
           >
             かんたん (1-10)
           </button>
           <button
-          className={difficulty === 'medium' ? styles.active : ''}
+            className={difficulty === 'medium' ? styles.active : ''}
             onClick={() => setDifficulty('medium')}
           >
             ふつう (1-20)
           </button>
           <button
-          className={difficulty === 'hard' ? styles.active : ''}
+            className={difficulty === 'hard' ? styles.active : ''}
             onClick={() => setDifficulty('hard')}
           >
             むずかしい (1-50)
           </button>
           <button
-          className={difficulty === 'custom' ? styles.active : ''}
+            className={difficulty === 'custom' ? styles.active : ''}
             onClick={() => setDifficulty('custom')}
           >
             じぶんできめる
@@ -64,7 +64,7 @@ function Settings({
       </div>
 
       {difficulty === 'custom' && (
-      <div className={`${styles['setting-group']} ${styles['custom-range']}`}>
+        <div className={`${styles['setting-group']} ${styles['custom-range']}`}>
           <h3>かずのはんい</h3>
           <div className={styles['range-inputs']}>
             <div className={styles['range-input']}>
@@ -95,13 +95,13 @@ function Settings({
         <h3>タイマー</h3>
         <div className={styles['timer-toggle']}>
           <button
-          className={showTimer ? styles.active : ''}
+            className={showTimer ? styles.active : ''}
             onClick={() => setShowTimer(true)}
           >
             ⏱️ ひょうじする
           </button>
           <button
-          className={!showTimer ? styles.active : ''}
+            className={!showTimer ? styles.active : ''}
             onClick={() => setShowTimer(false)}
           >
             🙈 ひょうじしない
@@ -118,7 +118,7 @@ function Settings({
         </ul>
       </div>
 
-    <button className={styles['back-button']} onClick={onBack}>
+      <button className={styles['back-button']} onClick={onBack}>
         ← もどる
       </button>
     </div>
