@@ -46,7 +46,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🧮 足し算・引き算れんしゅう</h1>
+        <h1>🧮 たしひき</h1>
         <nav className="nav-buttons">
           <button 
             className={screen === 'quiz' ? 'active' : ''}
