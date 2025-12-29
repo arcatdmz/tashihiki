@@ -10,6 +10,9 @@ function Results({ correctCount, wrongCount, onReset }) {
     if (totalCount === 0) {
       return "さあ、もんだいにチャレンジしよう！"
     }
+    if (accuracy === 100) {
+      return "パーフェクト！すばらしい！ 🎉"
+    }
     if (accuracy >= 90) {
       return "すごい！パーフェクトに近いよ！ 🌟"
     }
