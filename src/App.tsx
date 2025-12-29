@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
-import QuizScreen from './components/QuizScreen.tsx'
-import Settings from './components/Settings.tsx'
-import Results from './components/Results.tsx'
-import Welcome from './components/Welcome.tsx'
 
-interface ResponseTime {
-  time: number
-}
+import QuizScreen from './components/QuizScreen'
+import Results from './components/Results'
+import Settings from './components/Settings'
+import Welcome from './components/Welcome'
+
+type ResponseTime = { time: number }
 
 function App() {
   const [screen, setScreen] = useState<'welcome' | 'quiz' | 'settings' | 'results'>('welcome')
@@ -16,6 +15,19 @@ function App() {
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
   const [responseTimes, setResponseTimes] = useState<ResponseTime[]>([])
   const [showStartDimmer, setShowStartDimmer] = useState(false)
+  const [startTime, setStartTime] = useState<number | null>(null)
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [isFeedbackDimmer, setIsFeedbackDimmer] = useState(false)
+  // タイマーintervalをAppで管理（dimmer中は止める）
+  useEffect(() => {
+    let interval: NodeJS.Timeout | undefined
+    if (screen === 'quiz' && !showStartDimmer && !isFeedbackDimmer && startTime) {
+      interval = setInterval(() => {
+        setElapsedTime(Math.floor((Date.now() - startTime) / 1000))
+      }, 1000)
+    }
+    return () => { if (interval) clearInterval(interval) }
+  }, [screen, showStartDimmer, isFeedbackDimmer, startTime])
 
   // URLクエリパラメータから初期状態を取得
   const getInitialState = () => {
@@ -102,8 +114,15 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header" onClick={() => setScreen('settings')} style={{ cursor: 'pointer' }}>
-        <h1>🧮 たしひき</h1>
+      <header className="app-header" onClick={() => setScreen('settings')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h1 className="app-title" style={{ margin: 0 }}>
+            🧮 たしひき
+          </h1>
+        {showTimer && screen === 'quiz' && (
+          <div className="timer-in-header" style={{ fontSize: '1.2rem', color: '#667eea', fontWeight: 'bold', background: 'white', padding: '0.4rem 1rem', borderRadius: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}>
+            ⏱️ {elapsedTime}びょう
+          </div>
+        )}
       </header>
 
       <main className="app-main">
@@ -124,10 +143,14 @@ function App() {
             onWrong={handleWrongAnswer}
             onFinish={() => setScreen('results')}
             difficulty={difficulty}
-            showTimer={showTimer}
             customRange={customRange}
             showStartDimmer={showStartDimmer}
             onDimmerStart={handleDimmerStart}
+            startTime={startTime}
+            setStartTime={setStartTime}
+            elapsedTime={elapsedTime}
+            setElapsedTime={setElapsedTime}
+            onDimmerChange={setIsFeedbackDimmer}
           />
         )}
         {screen === 'settings' && (

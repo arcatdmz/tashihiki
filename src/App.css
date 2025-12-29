@@ -1,3 +1,4 @@
+/* --- 追加: タイトル白地ボックスとそろばんアイコン --- */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #fff;
   min-height: 100vh;
 }
 
@@ -30,8 +31,8 @@ body {
 }
 
 .app-header {
-  background: white;
-  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.5rem 1rem;
   border-radius: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   position: fixed;
@@ -47,9 +48,12 @@ body {
 }
 
 .app-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 0;
   text-align: left;
-  color: #333;
-  font-size: 1.8rem;
+  color: #fff;
+  font-size: 1.2rem;
   margin: 0;
   user-select: none;
   max-width: 900px;
@@ -59,8 +63,8 @@ body {
 .app-main {
   background: white;
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: none;
   flex: 1;
   margin: 1rem;
 }

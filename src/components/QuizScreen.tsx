@@ -13,18 +13,26 @@ interface QuizScreenProps {
   onWrong: () => void
   onFinish: () => void
   difficulty: 'easy' | 'medium' | 'hard' | 'custom'
-  showTimer: boolean
   customRange: { min: number; max: number }
   showStartDimmer: boolean
   onDimmerStart: () => void
+  startTime: number | null
+  setStartTime: (t: number) => void
+  elapsedTime: number
+  setElapsedTime: (t: number) => void
+  onDimmerChange?: (show: boolean) => void
 }
 
-function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, customRange, showStartDimmer, onDimmerStart }: QuizScreenProps) {
+function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, customRange, showStartDimmer, onDimmerStart, startTime, setStartTime, setElapsedTime, onDimmerChange }: QuizScreenProps) {
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
-  const [startTime, setStartTime] = useState<number | null>(null)
-  const [elapsedTime, setElapsedTime] = useState(0)
   const [showDimmer, setShowDimmer] = useState(false)
+  // showDimmerの変更を親に通知
+  useEffect(() => {
+    if (onDimmerChange) {
+      onDimmerChange(showDimmer)
+    }
+  }, [showDimmer, onDimmerChange])
 
   // 難易度に応じた範囲を取得
   const getRange = useCallback(() => {
@@ -68,24 +76,15 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
   // 問題を初期化（難易度変更時）
   useEffect(() => {
     const newProblem = generateProblem()
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProblem(newProblem)
-    // Only start timer if not showing start dimmer
     if (!showStartDimmer) {
       setStartTime(Date.now())
+      setElapsedTime(0)
     }
-  }, [difficulty, customRange, generateProblem, showStartDimmer])
+  }, [difficulty, customRange, generateProblem, showStartDimmer, setStartTime, setElapsedTime])
 
   // タイマー
-  useEffect(() => {
-    if (!startTime || showStartDimmer) return
-
-    const interval = setInterval(() => {
-      setElapsedTime(Math.floor((Date.now() - startTime) / 1000))
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [startTime, showStartDimmer])
+  // タイマー管理はAppに完全移譲
 
   // Start timer when dimmer is dismissed
   const handleStartClick = () => {
@@ -118,7 +117,7 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
       setTimeout(() => {
         setShowDimmer(false)
         setFeedback('')
-        setUserAnswer('')
+        nextProblem()
       }, 2000)
     }
   }
@@ -128,11 +127,8 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
     setProblem(generateProblem())
     setUserAnswer('')
     setFeedback('')
-    // Ensure fair timer start by setting time AFTER state updates
-    setTimeout(() => {
-      setStartTime(Date.now())
-      setElapsedTime(0)
-    }, 0)
+    setStartTime(Date.now())
+    setElapsedTime(0)
   }
 
   // 数字ボタンクリック
@@ -152,19 +148,26 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
 
   return (
     <>
-      <div className="quiz-screen">
-        {showTimer && (
-          <div className="timer-floating">
-            ⏱️ {elapsedTime}びょう
-          </div>
-        )}
 
+      <div className="quiz-screen">
         <div className="problem">
-          <span className="number">{problem.num1}</span>
-          <span className="operator">{problem.operator}</span>
-          <span className="number">{problem.num2}</span>
-          <span className="equals">=</span>
-          <span className="answer-box">{userAnswer || '?'}</span>
+          {showStartDimmer ? (
+            <>
+              <span className="number">?</span>
+              <span className="operator">+</span>
+              <span className="number">?</span>
+              <span className="equals">=</span>
+              <span className="answer-box">?</span>
+            </>
+          ) : (
+            <>
+              <span className="number">{problem.num1}</span>
+              <span className="operator">{problem.operator}</span>
+              <span className="number">{problem.num2}</span>
+              <span className="equals">=</span>
+              <span className="answer-box">{userAnswer || '?'}</span>
+            </>
+          )}
         </div>
 
         <div className="number-pad">
@@ -197,11 +200,28 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
         </button>
       </div>
 
+
       {showDimmer && (
         <div className="feedback-dimmer">
           <div className={`feedback-overlay ${feedback.includes('🎉') ? 'correct' : 'wrong'}`}>
-            {feedback}
+            {/* 絵文字とメッセージを分離して表示 */}
+            {(() => {
+              const match = feedback.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|[\u{1F300}-\u{1FAFF}\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F])/u)
+              if (match) {
+                const emoji = match[0]
+                const message = feedback.replace(emoji, '').trim()
+                return (
+                  <>
+                    <div style={{ fontSize: '4rem', textAlign: 'center', marginBottom: '0.5rem' }}>{emoji}</div>
+                    <div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{message}</div>
+                  </>
+                )
+              } else {
+                return <div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{feedback}</div>
+              }
+            })()}
           </div>
+
         </div>
       )}
 
