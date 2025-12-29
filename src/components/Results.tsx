@@ -1,4 +1,4 @@
-import './Results.css'
+import styles from './Results.module.css'
 
 interface ResponseTime {
   time: number
@@ -42,47 +42,47 @@ function Results({ correctCount, wrongCount, responseTimes, onReset, onBack }: R
   }
 
   return (
-    <div className="results">
+  <div className={styles.results}>
       <h2>📊 けっか</h2>
 
-      <div className="stats-container">
-        <div className="stat-card correct">
-          <div className="stat-icon">🎉</div>
-          <div className="stat-label">せいかい</div>
-          <div className="stat-value">{correctCount}</div>
-        </div>
+  <div className={styles['stats-container']}>
+  <div className={styles['stat-card'] + ' ' + styles.correct}>
+    <div className={styles['stat-icon']}>🎉</div>
+    <div className={styles['stat-label']}>せいかい</div>
+    <div className={styles['stat-value']}>{correctCount}</div>
+  </div>
 
-        <div className="stat-card wrong">
-          <div className="stat-icon">😓</div>
-          <div className="stat-label">まちがい</div>
-          <div className="stat-value">{wrongCount}</div>
-        </div>
+  <div className={styles['stat-card'] + ' ' + styles.wrong}>
+    <div className={styles['stat-icon']}>😓</div>
+    <div className={styles['stat-label']}>まちがい</div>
+    <div className={styles['stat-value']}>{wrongCount}</div>
+  </div>
 
-        <div className="stat-card total">
-          <div className="stat-icon">📝</div>
-          <div className="stat-label">ぜんぶ</div>
-          <div className="stat-value">{totalCount}</div>
-        </div>
+  <div className={styles['stat-card'] + ' ' + styles.total}>
+    <div className={styles['stat-icon']}>📝</div>
+    <div className={styles['stat-label']}>ぜんぶ</div>
+    <div className={styles['stat-value']}>{totalCount}</div>
+  </div>
       </div>
 
       {totalCount > 0 && (
         <>
-          <div className="accuracy-section">
+          <div className={styles['accuracy-section']}>
             <h3>せいかいりつ</h3>
-            <div className="accuracy-bar">
+            <div className={styles['accuracy-bar']}>
               <div 
-                className="accuracy-fill" 
+                className={styles['accuracy-fill']} 
                 style={{ width: `${accuracy}%` }}
               >
-                <span className="accuracy-text">{accuracy}%</span>
+                <span className={styles['accuracy-text']}>{accuracy}%</span>
               </div>
             </div>
+            <div className={styles['accuracy-message']}>{getMessage()}</div>
           </div>
-
           {responseTimes.length > 0 && (
-            <div className="average-time-section">
+            <div className={styles['average-time-section']}>
               <h3>へいきんかいとうじかん</h3>
-              <div className="average-time-value">
+              <div className={styles['average-time-value']}>
                 ⏱️ {averageTime}びょう
               </div>
             </div>
@@ -90,21 +90,17 @@ function Results({ correctCount, wrongCount, responseTimes, onReset, onBack }: R
         </>
       )}
 
-      <div className="message-box">
-        {getMessage()}
-      </div>
-
-      <button className="reset-button" onClick={onReset}>
+  <button className={styles['reset-button']} onClick={onReset}>
         🔄 リセット
       </button>
 
-      <button className="back-button" onClick={onBack}>
+  <button className={styles['back-button']} onClick={onBack}>
         ← もどる
       </button>
 
-      <div className="url-info">
+      <div className={styles['url-info']}>
         <p>💡 このページのURLをほぞんすると、けっかをあとでみることができるよ！</p>
-        <div className="url-display">
+        <div className={styles['url-display']}>
           {window.location.href}
         </div>
       </div>

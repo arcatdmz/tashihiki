@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import './QuizScreen.css'
+import styles from './QuizScreen.module.css'
 
 interface Problem {
   num1: number
@@ -23,16 +23,23 @@ interface QuizScreenProps {
   onDimmerChange?: (show: boolean) => void
 }
 
-function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, customRange, showStartDimmer, onDimmerStart, startTime, setStartTime, setElapsedTime, onDimmerChange }: QuizScreenProps) {
+function QuizScreen({
+  onCorrect,
+  onWrong,
+  onFinish,
+  difficulty,
+  customRange,
+  showStartDimmer,
+  onDimmerStart,
+  startTime,
+  setStartTime,
+  elapsedTime,
+  setElapsedTime,
+  onDimmerChange
+}: QuizScreenProps) {
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
   const [showDimmer, setShowDimmer] = useState(false)
-  // showDimmerの変更を親に通知
-  useEffect(() => {
-    if (onDimmerChange) {
-      onDimmerChange(showDimmer)
-    }
-  }, [showDimmer, onDimmerChange])
 
   // 難易度に応じた範囲を取得
   const getRange = useCallback(() => {
@@ -76,15 +83,21 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, customRange, sho
   // 問題を初期化（難易度変更時）
   useEffect(() => {
     const newProblem = generateProblem()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProblem(newProblem)
+    // Only start timer if not showing start dimmer
     if (!showStartDimmer) {
       setStartTime(Date.now())
-      setElapsedTime(0)
     }
-  }, [difficulty, customRange, generateProblem, showStartDimmer, setStartTime, setElapsedTime])
+  }, [difficulty, customRange, generateProblem, showStartDimmer])
 
-  // タイマー
-  // タイマー管理はAppに完全移譲
+
+  // showDimmerの変更を親に通知（AppのisFeedbackDimmer管理用）
+  useEffect(() => {
+    if (onDimmerChange) {
+      onDimmerChange(showDimmer)
+    }
+  }, [showDimmer, onDimmerChange])
 
   // Start timer when dimmer is dismissed
   const handleStartClick = () => {
@@ -148,88 +161,62 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, customRange, sho
 
   return (
     <>
-
-      <div className="quiz-screen">
-        <div className="problem">
-          {showStartDimmer ? (
-            <>
-              <span className="number">?</span>
-              <span className="operator">+</span>
-              <span className="number">?</span>
-              <span className="equals">=</span>
-              <span className="answer-box">?</span>
-            </>
-          ) : (
-            <>
-              <span className="number">{problem.num1}</span>
-              <span className="operator">{problem.operator}</span>
-              <span className="number">{problem.num2}</span>
-              <span className="equals">=</span>
-              <span className="answer-box">{userAnswer || '?'}</span>
-            </>
-          )}
+      <div className={styles['quiz-screen']}>
+        <div className={styles['problem']}>
+          <div className={styles['problem-inner']}>
+            {showStartDimmer ? (
+              <>
+                <span className={styles['number']}>?</span>
+                <span className={styles['operator']}>+</span>
+                <span className={styles['number']}>?</span>
+                <span className={styles['equals']}>=</span>
+                <span className={styles['answer-box']}>?</span>
+              </>
+            ) : (
+              <>
+                <span className={styles['number']}>{problem.num1}</span>
+                <span className={styles['operator']}>{problem.operator}</span>
+                <span className={styles['number']}>{problem.num2}</span>
+                <span className={styles['equals']}>=</span>
+                <span className={styles['answer-box']}>{userAnswer || '?'}</span>
+              </>
+            )}
+          </div>
         </div>
-
-        <div className="number-pad">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
-            <button
-              key={num}
-              className="number-button"
-              onClick={() => handleNumberClick(num)}
-            >
-              {num}
-            </button>
+        <div className={styles['number-pad']}>
+          {[1,2,3,4,5,6,7,8,9].map(num => (
+            <button key={num} className={styles['number-button']} onClick={() => handleNumberClick(num)}>{num}</button>
           ))}
-          <button className="number-button clear" onClick={handleClear}>
-            クリア
-          </button>
-          <button className="number-button" onClick={() => handleNumberClick(0)}>
-            0
-          </button>
-          <button className="number-button delete" onClick={handleDelete}>
-            ← けす
-          </button>
+          <button className={[styles['number-button'], styles['clear']].join(' ')} onClick={handleClear}>クリア</button>
+          <button className={styles['number-button']} onClick={() => handleNumberClick(0)}>0</button>
+          <button className={[styles['number-button'], styles['delete']].join(' ')} onClick={handleDelete}>← けす</button>
         </div>
-
-        <button className="check-button" onClick={checkAnswer}>
-          ✓ こたえる
-        </button>
-
-        <button className="finish-button" onClick={onFinish}>
-          ⏹️ おわる
-        </button>
+        <button className={styles['check-button']} onClick={checkAnswer}>✓ こたえる</button>
+        <button className={styles['finish-button']} onClick={onFinish}>⏹️ おわる</button>
       </div>
-
-
       {showDimmer && (
-        <div className="feedback-dimmer">
-          <div className={`feedback-overlay ${feedback.includes('🎉') ? 'correct' : 'wrong'}`}>
-            {/* 絵文字とメッセージを分離して表示 */}
+        <div className={styles['feedback-dimmer']}>
+          <div className={[
+            styles['feedback-overlay'],
+            feedback.includes('🎉') ? styles['correct'] : styles['wrong']
+          ].join(' ')}>
             {(() => {
-              const match = feedback.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|[\u{1F300}-\u{1FAFF}\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F])/u)
+              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/;
+              const match = feedback.match(emojiRegex);
               if (match) {
-                const emoji = match[0]
-                const message = feedback.replace(emoji, '').trim()
-                return (
-                  <>
-                    <div style={{ fontSize: '4rem', textAlign: 'center', marginBottom: '0.5rem' }}>{emoji}</div>
-                    <div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{message}</div>
-                  </>
-                )
+                const emoji = match[0];
+                const message = feedback.replace(emoji, '').trim();
+                return <><div style={{ fontSize: '4rem', textAlign: 'center', marginBottom: '0.5rem' }}>{emoji}</div><div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{message}</div></>;
               } else {
-                return <div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{feedback}</div>
+                return <div style={{ fontSize: '1.5rem', textAlign: 'left', whiteSpace: 'pre-line' }}>{feedback}</div>;
               }
             })()}
           </div>
-
         </div>
       )}
-
       {showStartDimmer && (
-        <div className="start-dimmer">
-          <button className="start-dimmer-button" onClick={handleStartClick}>
-            🚀 はじめる
-          </button>
+        <div className={styles['start-dimmer']}>
+          <button className={styles['start-dimmer-button']} onClick={handleStartClick}>🚀 はじめる</button>
         </div>
       )}
     </>

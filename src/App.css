@@ -69,6 +69,43 @@ body {
   margin: 1rem;
 }
 
+h2 {
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:active {
+  opacity: 0.9;
+}
+
+input[type="number"],
+input[type="text"] {
+  font-family: inherit;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 0.7em 1em;
+  outline: none;
+  transition: border 0.2s;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+  border-color: #667eea;
+}
+
 @media (max-width: 768px) {
   .app-header {
     padding: 1rem;

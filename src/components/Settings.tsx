@@ -1,4 +1,4 @@
-import './Settings.css'
+import styles from './Settings.module.css'
 
 interface SettingsProps {
   difficulty: 'easy' | 'medium' | 'hard' | 'custom'
@@ -30,32 +30,32 @@ function Settings({
   }
 
   return (
-    <div className="settings">
+    <div className={styles.settings}>
       <h2>⚙️ せってい</h2>
 
-      <div className="setting-group">
+      <div className={styles['setting-group']}>
         <h3>むずかしさ</h3>
-        <div className="difficulty-buttons">
+        <div className={styles['difficulty-buttons']}>
           <button
-            className={difficulty === 'easy' ? 'active' : ''}
+          className={difficulty === 'easy' ? styles.active : ''}
             onClick={() => setDifficulty('easy')}
           >
             かんたん (1-10)
           </button>
           <button
-            className={difficulty === 'medium' ? 'active' : ''}
+          className={difficulty === 'medium' ? styles.active : ''}
             onClick={() => setDifficulty('medium')}
           >
             ふつう (1-20)
           </button>
           <button
-            className={difficulty === 'hard' ? 'active' : ''}
+          className={difficulty === 'hard' ? styles.active : ''}
             onClick={() => setDifficulty('hard')}
           >
             むずかしい (1-50)
           </button>
           <button
-            className={difficulty === 'custom' ? 'active' : ''}
+          className={difficulty === 'custom' ? styles.active : ''}
             onClick={() => setDifficulty('custom')}
           >
             じぶんできめる
@@ -64,10 +64,10 @@ function Settings({
       </div>
 
       {difficulty === 'custom' && (
-        <div className="setting-group custom-range">
+      <div className={`${styles['setting-group']} ${styles['custom-range']}`}>
           <h3>かずのはんい</h3>
-          <div className="range-inputs">
-            <div className="range-input">
+          <div className={styles['range-inputs']}>
+            <div className={styles['range-input']}>
               <label>いちばんちいさいかず</label>
               <input
                 type="number"
@@ -77,7 +77,7 @@ function Settings({
                 onChange={handleCustomMinChange}
               />
             </div>
-            <div className="range-input">
+            <div className={styles['range-input']}>
               <label>いちばんおおきいかず</label>
               <input
                 type="number"
@@ -91,17 +91,17 @@ function Settings({
         </div>
       )}
 
-      <div className="setting-group">
+      <div className={styles['setting-group']}>
         <h3>タイマー</h3>
-        <div className="timer-toggle">
+        <div className={styles['timer-toggle']}>
           <button
-            className={showTimer ? 'active' : ''}
+          className={showTimer ? styles.active : ''}
             onClick={() => setShowTimer(true)}
           >
             ⏱️ ひょうじする
           </button>
           <button
-            className={!showTimer ? 'active' : ''}
+          className={!showTimer ? styles.active : ''}
             onClick={() => setShowTimer(false)}
           >
             🙈 ひょうじしない
@@ -109,7 +109,7 @@ function Settings({
         </div>
       </div>
 
-      <div className="info-box">
+      <div className={styles['info-box']}>
         <p>💡 せつめい</p>
         <ul>
           <li>むずかしさをえらぶと、もんだいのかずがかわるよ</li>
@@ -118,7 +118,7 @@ function Settings({
         </ul>
       </div>
 
-      <button className="back-button" onClick={onBack}>
+    <button className={styles['back-button']} onClick={onBack}>
         ← もどる
       </button>
     </div>
