@@ -90,6 +90,12 @@ function QuizScreen({
     }
   }, [showDimmer, onDimmerChange])
 
+  useEffect(() => {
+    if (showStartDimmer) {
+      window.scrollTo(0, 0)
+    }
+  }, [showStartDimmer])
+
   const handleStartClick = () => {
     onDimmerStart()
     setStartTime(Date.now())
