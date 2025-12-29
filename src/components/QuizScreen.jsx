@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import './QuizScreen.css'
 
 function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) {
-  const [problem, setProblem] = useState(null)
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
   const [startTime, setStartTime] = useState(null)
   const [elapsedTime, setElapsedTime] = useState(0)
 
   // 難易度に応じた範囲を取得
-  const getRange = () => {
+  const getRange = useCallback(() => {
     if (difficulty === 'custom') {
       return customRange
     }
@@ -23,10 +22,10 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
       default:
         return { min: 1, max: 10 }
     }
-  }
+  }, [difficulty, customRange])
 
   // 新しい問題を生成
-  const generateProblem = () => {
+  const generateProblem = useCallback(() => {
     const range = getRange()
     const operator = Math.random() > 0.5 ? '+' : '-'
     
@@ -43,13 +42,17 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
     const answer = operator === '+' ? num1 + num2 : num1 - num2
 
     return { num1, num2, operator, answer }
-  }
+  }, [getRange])
 
-  // 問題を初期化
+  const [problem, setProblem] = useState(() => generateProblem())
+
+  // 問題を初期化（難易度変更時）
   useEffect(() => {
-    setProblem(generateProblem())
+    const newProblem = generateProblem()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setProblem(newProblem)
     setStartTime(Date.now())
-  }, [difficulty, customRange])
+  }, [difficulty, customRange, generateProblem])
 
   // タイマー
   useEffect(() => {

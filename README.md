@@ -1,16 +1,130 @@
-# React + Vite
+# 足し算・引き算れんしゅう
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+小学一年生向けの足し算と引き算を練習できるWebアプリケーションです。
 
-Currently, two official plugins are available:
+## 🎯 概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+タッチデバイス（スマートフォン・タブレット）を使用して、楽しく算数の基礎を学べるクライアントオンリーのReactアプリです。
 
-## React Compiler
+## ✨ 主な機能
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. 問題画面（もんだい）
+- 足し算と引き算の問題をランダムで出題
+- 大きくて押しやすい数字ボタン
+- 正解・不正解の楽しいフィードバック（絵文字付き）
+- タイマー機能で問題ごとの時間を計測
 
-## Expanding the ESLint configuration
+### 2. 設定画面（せってい）
+- **難易度選択**
+  - かんたん（1-10）
+  - ふつう（1-20）
+  - むずかしい（1-50）
+  - じぶんできめる（カスタム範囲）
+- **タイマー表示のオン/オフ**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 3. 結果画面（けっか）
+- 正解数・不正解数・合計の表示
+- 正解率の視覚的な表示
+- URLでの履歴保存機能
+- リセット機能
+
+## 🎨 デザインの特徴
+
+- 親しみやすいカラフルなUI
+- 大きなタッチ操作可能なボタン
+- 絵文字を活用した楽しいフィードバック
+- モバイルファーストのレスポンシブデザイン
+
+## 🚀 技術スタック
+
+- **React 19** - UIフレームワーク
+- **Vite** - ビルドツール
+- **React Hooks** - 状態管理（useState, useEffect）
+- **URLSearchParams** - クエリパラメータ管理
+
+## 📦 インストールと起動
+
+### 必要な環境
+- Node.js 20.x以上
+- npm 10.x以上
+
+### セットアップ
+
+```bash
+# 依存関係のインストール
+npm install
+
+# 開発サーバーの起動
+npm run dev
+
+# ブラウザで http://localhost:5173/ にアクセス
+```
+
+### ビルド
+
+```bash
+# プロダクションビルド
+npm run build
+
+# ビルドのプレビュー
+npm run preview
+```
+
+## 📱 使い方
+
+1. **問題を解く**
+   - 「もんだい」タブで問題が表示されます
+   - 数字ボタンをタップして答えを入力
+   - 「✓ こたえる」ボタンで答えを送信
+   - 正解なら次の問題へ、不正解なら正しい答えが表示されます
+
+2. **設定を変更**
+   - 「せってい」タブで難易度やタイマー表示を変更
+   - 変更は即座に反映されます
+
+3. **結果を確認**
+   - 「けっか」タブで成績を確認
+   - URLを保存すれば後で結果を見ることができます
+   - 「🔄 リセット」ボタンで成績をリセット
+
+## 🔗 URL履歴保存機能
+
+アプリは正解数と不正解数をURLクエリパラメータに自動保存します：
+
+```
+例: ?correct=5&wrong=2
+```
+
+このURLをブックマークやシェアすることで、学習の進捗を記録できます。
+
+## 🏗️ プロジェクト構造
+
+```
+src/
+├── App.jsx              # メインアプリケーションコンポーネント
+├── App.css              # アプリケーション全体のスタイル
+├── main.jsx             # エントリーポイント
+├── index.css            # グローバルスタイル
+└── components/
+    ├── QuizScreen.jsx   # 問題画面コンポーネント
+    ├── QuizScreen.css   # 問題画面のスタイル
+    ├── Settings.jsx     # 設定画面コンポーネント
+    ├── Settings.css     # 設定画面のスタイル
+    ├── Results.jsx      # 結果画面コンポーネント
+    └── Results.css      # 結果画面のスタイル
+```
+
+## 🎓 教育的配慮
+
+- 引き算の答えが負の数にならないように自動調整
+- 年齢に合わせた視覚的なフィードバック
+- シンプルで直感的な操作性
+- 段階的な難易度設定
+
+## 📄 ライセンス
+
+このプロジェクトはオープンソースです。
+
+## 🤝 貢献
+
+バグ報告や機能リクエストは、GitHubのIssuesからお願いします。

@@ -6,20 +6,21 @@ import Results from './components/Results'
 
 function App() {
   const [screen, setScreen] = useState('quiz') // 'quiz', 'settings', 'results'
-  const [correctCount, setCorrectCount] = useState(0)
-  const [wrongCount, setWrongCount] = useState(0)
   const [difficulty, setDifficulty] = useState('easy')
   const [showTimer, setShowTimer] = useState(true)
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
 
-  // URLクエリパラメータから状態を読み込む
-  useEffect(() => {
+  // URLクエリパラメータから初期状態を取得
+  const getInitialCounts = () => {
     const params = new URLSearchParams(window.location.search)
-    const correct = parseInt(params.get('correct')) || 0
-    const wrong = parseInt(params.get('wrong')) || 0
-    setCorrectCount(correct)
-    setWrongCount(wrong)
-  }, [])
+    return {
+      correct: parseInt(params.get('correct')) || 0,
+      wrong: parseInt(params.get('wrong')) || 0
+    }
+  }
+
+  const [correctCount, setCorrectCount] = useState(() => getInitialCounts().correct)
+  const [wrongCount, setWrongCount] = useState(() => getInitialCounts().wrong)
 
   // 状態が変わったらURLを更新
   useEffect(() => {
