@@ -1,25 +1,18 @@
 import styles from './Results.module.css'
 
-interface ResponseTime {
-  time: number
-}
 
 interface ResultsProps {
   correctCount: number
   wrongCount: number
-  responseTimes: ResponseTime[]
+  averageTime: number
   onReset: () => void
   onBack: () => void
 }
 
-function Results({ correctCount, wrongCount, responseTimes, onReset, onBack }: ResultsProps) {
+function Results({ correctCount, wrongCount, averageTime, onReset, onBack }: ResultsProps) {
   const totalCount = correctCount + wrongCount
   const accuracy = totalCount > 0 
     ? Math.round((correctCount / totalCount) * 100) 
-    : 0
-  
-  const averageTime = responseTimes.length > 0
-    ? Math.round(responseTimes.reduce((sum, rt) => sum + rt.time, 0) / responseTimes.length)
     : 0
 
   const getMessage = () => {
@@ -65,6 +58,7 @@ function Results({ correctCount, wrongCount, responseTimes, onReset, onBack }: R
   </div>
       </div>
 
+
       {totalCount > 0 && (
         <>
           <div className={styles['accuracy-section']}>
@@ -79,14 +73,12 @@ function Results({ correctCount, wrongCount, responseTimes, onReset, onBack }: R
             </div>
             <div className={styles['accuracy-message']}>{getMessage()}</div>
           </div>
-          {responseTimes.length > 0 && (
-            <div className={styles['average-time-section']}>
-              <h3>へいきんかいとうじかん</h3>
-              <div className={styles['average-time-value']}>
-                ⏱️ {averageTime}びょう
-              </div>
+          <div className={styles['average-time-section']}>
+            <h3>へいきんかいとうじかん</h3>
+            <div className={styles['average-time-value']}>
+              ⏱️ {averageTime.toFixed(1)}びょう
             </div>
-          )}
+          </div>
         </>
       )}
 

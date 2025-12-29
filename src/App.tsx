@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import './App.css'
 
@@ -6,18 +7,17 @@ import Results from './components/Results'
 import Settings from './components/Settings'
 import Welcome from './components/Welcome'
 
-type ResponseTime = { time: number }
-
 function App() {
   const [screen, setScreen] = useState<'welcome' | 'quiz' | 'settings' | 'results'>('welcome')
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard' | 'custom'>('easy')
   const [showTimer, setShowTimer] = useState(true)
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
-  const [responseTimes, setResponseTimes] = useState<ResponseTime[]>([])
   const [showStartDimmer, setShowStartDimmer] = useState(false)
   const [startTime, setStartTime] = useState<number | null>(null)
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isFeedbackDimmer, setIsFeedbackDimmer] = useState(false)
+  // 合計解答時間と解答数を管理
+  const [totalAnswerTime, setTotalAnswerTime] = useState(0)
   // タイマーintervalをAppで管理（dimmer中は止める）
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
@@ -32,30 +32,27 @@ function App() {
   // URLクエリパラメータから初期状態を取得
   const getInitialState = () => {
     const params = new URLSearchParams(window.location.search)
-    const timesParam = params.get('times')
-    const times: ResponseTime[] = timesParam 
-      ? timesParam.split(',').map(t => ({ time: parseFloat(t) }))
-      : []
-    
     return {
       correct: parseInt(params.get('correct') || '0') || 0,
       wrong: parseInt(params.get('wrong') || '0') || 0,
-      times
+      totalTime: parseFloat(params.get('totalTime') || '0') || 0
     }
   }
 
   const [correctCount, setCorrectCount] = useState(() => getInitialState().correct)
   const [wrongCount, setWrongCount] = useState(() => getInitialState().wrong)
+  // 合計解答時間と解答数も初期化
+  useEffect(() => {
+    const initialState = getInitialState()
+    setTotalAnswerTime(initialState.totalTime)
+  }, [])
 
   // 初回起動チェック
   useEffect(() => {
     const started = localStorage.getItem('hasStarted')
     const initialState = getInitialState()
 
-    // Load response times from URL
-    if (initialState.times.length > 0) {
-      setResponseTimes(initialState.times)
-    }
+    // ...existing code...
 
     // If has progress in URL, show quiz, otherwise show welcome
     if (started === 'true' && (initialState.correct > 0 || initialState.wrong > 0)) {
@@ -71,28 +68,26 @@ function App() {
     const params = new URLSearchParams()
     params.set('correct', correctCount.toString())
     params.set('wrong', wrongCount.toString())
-    
-    // Save response times to URL
-    if (responseTimes.length > 0) {
-      params.set('times', responseTimes.map(rt => rt.time.toString()).join(','))
-    }
-    
+  params.set('totalTime', totalAnswerTime.toFixed(3))
     window.history.replaceState({}, '', `?${params.toString()}`)
-  }, [correctCount, wrongCount, responseTimes])
+  }, [correctCount, wrongCount, totalAnswerTime])
 
   const handleCorrectAnswer = (time: number) => {
+    // time is ms, convert to seconds (float)
     setCorrectCount(prev => prev + 1)
-    setResponseTimes(prev => [...prev, { time }])
+    setTotalAnswerTime(prev => prev + time / 1000)
   }
 
-  const handleWrongAnswer = () => {
+  const handleWrongAnswer = (time: number) => {
+    // time is ms, convert to seconds (float)
     setWrongCount(prev => prev + 1)
+    setTotalAnswerTime(prev => prev + time / 1000)
   }
 
   const handleReset = () => {
     setCorrectCount(0)
     setWrongCount(0)
-    setResponseTimes([])
+    setTotalAnswerTime(0)
   }
 
   const handleStart = () => {
@@ -167,7 +162,7 @@ function App() {
           <Results 
             correctCount={correctCount}
             wrongCount={wrongCount}
-            responseTimes={responseTimes}
+            averageTime={(correctCount + wrongCount) > 0 ? totalAnswerTime / (correctCount + wrongCount) : 0}
             onReset={handleReset}
             onBack={() => {
               setScreen('quiz');

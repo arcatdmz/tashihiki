@@ -10,7 +10,7 @@ interface Problem {
 
 interface QuizScreenProps {
   onCorrect: (time: number) => void
-  onWrong: () => void
+  onWrong: (time: number) => void
   onFinish: () => void
   difficulty: 'easy' | 'medium' | 'hard' | 'custom'
   customRange: { min: number; max: number }
@@ -111,7 +111,7 @@ function QuizScreen({
     if (userAnswer === '') return
 
     const isCorrect = parseInt(userAnswer) === problem.answer
-    const responseTime = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0
+  const responseTime = startTime ? Date.now() - startTime : 0
 
     // Show dimmer with feedback
     setShowDimmer(true)
@@ -126,7 +126,7 @@ function QuizScreen({
       }, 1500)
     } else {
       setFeedback(`😓 ざんねん！こたえは ${problem.answer} だよ`)
-      onWrong()
+      onWrong(responseTime)
       setTimeout(() => {
         setShowDimmer(false)
         setFeedback('')
