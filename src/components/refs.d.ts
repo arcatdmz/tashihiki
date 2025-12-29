@@ -1,5 +1,5 @@
-// TypeScript declaration for CSS modules
-// This allows importing CSS Modules in TS/TSX files
+// CSSモジュールのTypeScript宣言ファイル
+// TS/TSXファイルでCSSモジュールをインポートできるようにする
 
 declare module '*.module.css' {
 	const classes: { [key: string]: string }

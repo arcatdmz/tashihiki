@@ -16,9 +16,7 @@ function App() {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isFeedbackDimmer, setIsFeedbackDimmer] = useState(false)
-  // 合計解答時間と解答数を管理
   const [totalAnswerTime, setTotalAnswerTime] = useState(0)
-  // タイマーintervalをAppで管理（dimmer中は止める）
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
     if (screen === 'quiz' && !showStartDimmer && !isFeedbackDimmer && startTime) {
@@ -29,7 +27,6 @@ function App() {
     return () => { if (interval) clearInterval(interval) }
   }, [screen, showStartDimmer, isFeedbackDimmer, startTime])
 
-  // URLクエリパラメータから初期状態を取得
   const getInitialState = () => {
     const params = new URLSearchParams(window.location.search)
     return {
@@ -41,20 +38,15 @@ function App() {
 
   const [correctCount, setCorrectCount] = useState(() => getInitialState().correct)
   const [wrongCount, setWrongCount] = useState(() => getInitialState().wrong)
-  // 合計解答時間と解答数も初期化
   useEffect(() => {
     const initialState = getInitialState()
     setTotalAnswerTime(initialState.totalTime)
   }, [])
 
-  // 初回起動チェック
   useEffect(() => {
     const started = localStorage.getItem('hasStarted')
     const initialState = getInitialState()
 
-    // ...existing code...
-
-    // If has progress in URL, show quiz, otherwise show welcome
     if (started === 'true' && (initialState.correct > 0 || initialState.wrong > 0)) {
       setScreen('quiz')
       setShowStartDimmer(true)
@@ -63,7 +55,6 @@ function App() {
     }
   }, [])
 
-  // 状態が変わったらURLを更新
   useEffect(() => {
     const params = new URLSearchParams()
     params.set('correct', correctCount.toString())
@@ -73,13 +64,11 @@ function App() {
   }, [correctCount, wrongCount, totalAnswerTime])
 
   const handleCorrectAnswer = (time: number) => {
-    // time is ms, convert to seconds (float)
     setCorrectCount(prev => prev + 1)
     setTotalAnswerTime(prev => prev + time / 1000)
   }
 
   const handleWrongAnswer = (time: number) => {
-    // time is ms, convert to seconds (float)
     setWrongCount(prev => prev + 1)
     setTotalAnswerTime(prev => prev + time / 1000)
   }
