@@ -1,0 +1,152 @@
+.welcome {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+}
+
+.welcome-content {
+  flex: 1;
+}
+
+.welcome-intro {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 15px;
+}
+
+.welcome-intro h2 {
+  color: #667eea;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-intro p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.8;
+}
+
+.welcome-settings {
+  margin-bottom: 2rem;
+}
+
+.welcome-settings h3 {
+  color: #667eea;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.setting-group {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: #f8f9ff;
+  border-radius: 15px;
+}
+
+.setting-group h4 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.difficulty-buttons,
+.timer-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.difficulty-buttons button,
+.timer-toggle button {
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: white;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  touch-action: manipulation;
+}
+
+.difficulty-buttons button:active,
+.timer-toggle button:active {
+  transform: scale(0.98);
+}
+
+.difficulty-buttons button.active,
+.timer-toggle button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.custom-range {
+  background: #fff4e6;
+}
+
+.range-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.range-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.range-input label {
+  font-weight: bold;
+  color: #666;
+  font-size: 1rem;
+}
+
+.range-input input {
+  padding: 0.8rem;
+  font-size: 1.3rem;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.start-button {
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+}
+
+.start-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .welcome-intro h2 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-intro p {
+    font-size: 1rem;
+  }
+
+  .start-button {
+    font-size: 1.5rem;
+  }
+}
