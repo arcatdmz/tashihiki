@@ -5,10 +5,18 @@
   gap: 1.5rem;
 }
 
-.timer {
-  font-size: 1.5rem;
+.timer-floating {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  font-size: 1.3rem;
   color: #667eea;
   font-weight: bold;
+  background: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 999;
 }
 
 .problem {
@@ -132,27 +140,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.skip-button {
-  width: 100%;
-  max-width: 400px;
-  padding: 1rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border: 2px solid #667eea;
-  border-radius: 15px;
-  background: white;
-  color: #667eea;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  touch-action: manipulation;
-}
-
-.skip-button:active {
-  transform: scale(0.98);
-  background: #f0f0f0;
-}
-
 @media (max-width: 768px) {
+  .timer-floating {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
   .problem {
     font-size: 2rem;
     gap: 0.5rem;

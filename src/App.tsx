@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import QuizScreen from './components/QuizScreen'
-import Settings from './components/Settings'
-import Results from './components/Results'
+import QuizScreen from './components/QuizScreen.tsx'
+import Settings from './components/Settings.tsx'
+import Results from './components/Results.tsx'
+
+interface ResponseTime {
+  time: number
+}
 
 function App() {
-  const [screen, setScreen] = useState('quiz') // 'quiz', 'settings', 'results'
-  const [difficulty, setDifficulty] = useState('easy')
+  const [screen, setScreen] = useState<'quiz' | 'settings' | 'results'>('quiz')
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard' | 'custom'>('easy')
   const [showTimer, setShowTimer] = useState(true)
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
+  const [responseTimes, setResponseTimes] = useState<ResponseTime[]>([])
 
   // URLクエリパラメータから初期状態を取得
   const getInitialCounts = () => {
     const params = new URLSearchParams(window.location.search)
     return {
-      correct: parseInt(params.get('correct')) || 0,
-      wrong: parseInt(params.get('wrong')) || 0
+      correct: parseInt(params.get('correct') || '0') || 0,
+      wrong: parseInt(params.get('wrong') || '0') || 0
     }
   }
 
@@ -30,8 +35,9 @@ function App() {
     window.history.replaceState({}, '', `?${params.toString()}`)
   }, [correctCount, wrongCount])
 
-  const handleCorrectAnswer = () => {
+  const handleCorrectAnswer = (time: number) => {
     setCorrectCount(prev => prev + 1)
+    setResponseTimes(prev => [...prev, { time }])
   }
 
   const handleWrongAnswer = () => {
@@ -41,32 +47,13 @@ function App() {
   const handleReset = () => {
     setCorrectCount(0)
     setWrongCount(0)
+    setResponseTimes([])
   }
 
   return (
     <div className="app">
       <header className="app-header">
         <h1>🧮 たしひき</h1>
-        <nav className="nav-buttons">
-          <button 
-            className={screen === 'quiz' ? 'active' : ''}
-            onClick={() => setScreen('quiz')}
-          >
-            もんだい
-          </button>
-          <button 
-            className={screen === 'settings' ? 'active' : ''}
-            onClick={() => setScreen('settings')}
-          >
-            せってい
-          </button>
-          <button 
-            className={screen === 'results' ? 'active' : ''}
-            onClick={() => setScreen('results')}
-          >
-            けっか
-          </button>
-        </nav>
       </header>
 
       <main className="app-main">
@@ -93,10 +80,32 @@ function App() {
           <Results 
             correctCount={correctCount}
             wrongCount={wrongCount}
+            responseTimes={responseTimes}
             onReset={handleReset}
           />
         )}
       </main>
+
+      <nav className="nav-buttons">
+        <button 
+          className={screen === 'quiz' ? 'active' : ''}
+          onClick={() => setScreen('quiz')}
+        >
+          もんだい
+        </button>
+        <button 
+          className={screen === 'settings' ? 'active' : ''}
+          onClick={() => setScreen('settings')}
+        >
+          せってい
+        </button>
+        <button 
+          className={screen === 'results' ? 'active' : ''}
+          onClick={() => setScreen('results')}
+        >
+          けっか
+        </button>
+      </nav>
     </div>
   )
 }

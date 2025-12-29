@@ -1,9 +1,24 @@
 import './Results.css'
 
-function Results({ correctCount, wrongCount, onReset }) {
+interface ResponseTime {
+  time: number
+}
+
+interface ResultsProps {
+  correctCount: number
+  wrongCount: number
+  responseTimes: ResponseTime[]
+  onReset: () => void
+}
+
+function Results({ correctCount, wrongCount, responseTimes, onReset }: ResultsProps) {
   const totalCount = correctCount + wrongCount
   const accuracy = totalCount > 0 
     ? Math.round((correctCount / totalCount) * 100) 
+    : 0
+  
+  const averageTime = responseTimes.length > 0
+    ? Math.round(responseTimes.reduce((sum, rt) => sum + rt.time, 0) / responseTimes.length)
     : 0
 
   const getMessage = () => {
@@ -50,17 +65,28 @@ function Results({ correctCount, wrongCount, onReset }) {
       </div>
 
       {totalCount > 0 && (
-        <div className="accuracy-section">
-          <h3>せいかいりつ</h3>
-          <div className="accuracy-bar">
-            <div 
-              className="accuracy-fill" 
-              style={{ width: `${accuracy}%` }}
-            >
-              <span className="accuracy-text">{accuracy}%</span>
+        <>
+          <div className="accuracy-section">
+            <h3>せいかいりつ</h3>
+            <div className="accuracy-bar">
+              <div 
+                className="accuracy-fill" 
+                style={{ width: `${accuracy}%` }}
+              >
+                <span className="accuracy-text">{accuracy}%</span>
+              </div>
             </div>
           </div>
-        </div>
+
+          {responseTimes.length > 0 && (
+            <div className="average-time-section">
+              <h3>へいきんかいとうじかん</h3>
+              <div className="average-time-value">
+                ⏱️ {averageTime}びょう
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       <div className="message-box">

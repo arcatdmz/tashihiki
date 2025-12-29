@@ -1,5 +1,14 @@
 import './Settings.css'
 
+interface SettingsProps {
+  difficulty: 'easy' | 'medium' | 'hard' | 'custom'
+  setDifficulty: (difficulty: 'easy' | 'medium' | 'hard' | 'custom') => void
+  showTimer: boolean
+  setShowTimer: (show: boolean) => void
+  customRange: { min: number; max: number }
+  setCustomRange: (range: { min: number; max: number }) => void
+}
+
 function Settings({ 
   difficulty, 
   setDifficulty, 
@@ -7,15 +16,15 @@ function Settings({
   setShowTimer,
   customRange,
   setCustomRange 
-}) {
-  const handleCustomMinChange = (e) => {
+}: SettingsProps) {
+  const handleCustomMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 1
-    setCustomRange(prev => ({ ...prev, min: value }))
+    setCustomRange({ ...customRange, min: value })
   }
 
-  const handleCustomMaxChange = (e) => {
+  const handleCustomMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 10
-    setCustomRange(prev => ({ ...prev, max: value }))
+    setCustomRange({ ...customRange, max: value })
   }
 
   return (

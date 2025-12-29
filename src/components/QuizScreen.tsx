@@ -1,10 +1,25 @@
 import { useState, useEffect, useCallback } from 'react'
 import './QuizScreen.css'
 
-function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) {
+interface Problem {
+  num1: number
+  num2: number
+  operator: '+' | '-'
+  answer: number
+}
+
+interface QuizScreenProps {
+  onCorrect: (time: number) => void
+  onWrong: () => void
+  difficulty: 'easy' | 'medium' | 'hard' | 'custom'
+  showTimer: boolean
+  customRange: { min: number; max: number }
+}
+
+function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }: QuizScreenProps) {
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
-  const [startTime, setStartTime] = useState(null)
+  const [startTime, setStartTime] = useState<number | null>(null)
   const [elapsedTime, setElapsedTime] = useState(0)
 
   // 難易度に応じた範囲を取得
@@ -25,11 +40,11 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
   }, [difficulty, customRange])
 
   // 新しい問題を生成
-  const generateProblem = useCallback(() => {
+  const generateProblem = useCallback((): Problem => {
     const range = getRange()
-    const operator = Math.random() > 0.5 ? '+' : '-'
+    const operator: '+' | '-' = Math.random() > 0.5 ? '+' : '-'
     
-    let num1, num2
+    let num1: number, num2: number
     if (operator === '+') {
       num1 = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
       num2 = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
@@ -44,7 +59,7 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
     return { num1, num2, operator, answer }
   }, [getRange])
 
-  const [problem, setProblem] = useState(() => generateProblem())
+  const [problem, setProblem] = useState<Problem>(() => generateProblem())
 
   // 問題を初期化（難易度変更時）
   useEffect(() => {
@@ -56,24 +71,25 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
 
   // タイマー
   useEffect(() => {
-    if (!showTimer || !startTime) return
+    if (!startTime) return
 
     const interval = setInterval(() => {
       setElapsedTime(Math.floor((Date.now() - startTime) / 1000))
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [showTimer, startTime])
+  }, [startTime])
 
   // 答えを確認
   const checkAnswer = () => {
     if (userAnswer === '') return
 
     const isCorrect = parseInt(userAnswer) === problem.answer
+    const responseTime = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0
 
     if (isCorrect) {
       setFeedback('🎉 せいかい！')
-      onCorrect()
+      onCorrect(responseTime)
       setTimeout(() => {
         nextProblem()
       }, 1000)
@@ -97,7 +113,7 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
   }
 
   // 数字ボタンクリック
-  const handleNumberClick = (num) => {
+  const handleNumberClick = (num: number) => {
     setUserAnswer(prev => prev + num.toString())
   }
 
@@ -111,13 +127,11 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
     setUserAnswer('')
   }
 
-  if (!problem) return <div>よみこみちゅう...</div>
-
   return (
     <div className="quiz-screen">
       {showTimer && (
-        <div className="timer">
-          ⏱️ {elapsedTime} びょう
+        <div className="timer-floating">
+          ⏱️ {elapsedTime}びょう
         </div>
       )}
 
@@ -158,10 +172,6 @@ function QuizScreen({ onCorrect, onWrong, difficulty, showTimer, customRange }) 
 
       <button className="check-button" onClick={checkAnswer}>
         ✓ こたえる
-      </button>
-
-      <button className="skip-button" onClick={nextProblem}>
-        → つぎのもんだい
       </button>
     </div>
   )

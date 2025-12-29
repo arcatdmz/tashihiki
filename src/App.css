@@ -18,10 +18,13 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
+  padding-bottom: 6rem; /* Space for fixed bottom navigation */
 }
 
 .app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-header {
@@ -30,30 +33,35 @@ body {
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .app-header h1 {
-  text-align: center;
+  text-align: left;
   color: #333;
   font-size: 1.8rem;
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .nav-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  gap: 0;
+  background: white;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .nav-buttons button {
   flex: 1;
-  min-width: 100px;
-  padding: 0.8rem;
+  padding: 1.2rem;
   font-size: 1.2rem;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   background: #f0f0f0;
   color: #666;
   cursor: pointer;
@@ -62,7 +70,7 @@ body {
 }
 
 .nav-buttons button:active {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 .nav-buttons button.active {
@@ -75,6 +83,7 @@ body {
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex: 1;
 }
 
 @media (max-width: 768px) {
@@ -84,10 +93,14 @@ body {
   
   .nav-buttons button {
     font-size: 1rem;
-    padding: 0.6rem 1rem;
+    padding: 1rem;
   }
   
   .app-main {
     padding: 1.5rem;
+  }
+
+  #root {
+    padding-bottom: 5rem;
   }
 }
