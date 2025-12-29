@@ -142,7 +142,6 @@ function App() {
             onDimmerStart={handleDimmerStart}
             startTime={startTime}
             setStartTime={setStartTime}
-            elapsedTime={elapsedTime}
             setElapsedTime={setElapsedTime}
             onDimmerChange={setIsFeedbackDimmer}
           />

@@ -18,7 +18,6 @@ interface QuizScreenProps {
   onDimmerStart: () => void
   startTime: number | null
   setStartTime: (t: number) => void
-  elapsedTime: number
   setElapsedTime: (t: number) => void
   onDimmerChange?: (show: boolean) => void
 }
@@ -33,7 +32,6 @@ function QuizScreen({
   onDimmerStart,
   startTime,
   setStartTime,
-  elapsedTime,
   setElapsedTime,
   onDimmerChange
 }: QuizScreenProps) {
