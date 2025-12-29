@@ -51,20 +51,18 @@ function App() {
   useEffect(() => {
     const started = localStorage.getItem('hasStarted')
     const initialState = getInitialState()
-    
+
     // Load response times from URL
     if (initialState.times.length > 0) {
       setResponseTimes(initialState.times)
     }
-    
-    // If has progress in URL, show start dimmer instead of auto-starting
-    if (started === 'true') {
-      if (initialState.correct > 0 || initialState.wrong > 0) {
-        setScreen('quiz')
-        setShowStartDimmer(true)
-      } else {
-        setScreen('quiz')
-      }
+
+    // If has progress in URL, show quiz, otherwise show welcome
+    if (started === 'true' && (initialState.correct > 0 || initialState.wrong > 0)) {
+      setScreen('quiz')
+      setShowStartDimmer(true)
+    } else {
+      setScreen('welcome')
     }
   }, [])
 
@@ -108,8 +106,9 @@ function App() {
   }
 
   const handleBackFromSettings = () => {
-    setScreen('quiz')
-    setShowStartDimmer(true)
+  setScreen('quiz')
+  setShowStartDimmer(true)
+  setElapsedTime(0)
   }
 
   return (
@@ -170,7 +169,11 @@ function App() {
             wrongCount={wrongCount}
             responseTimes={responseTimes}
             onReset={handleReset}
-            onBack={() => { setScreen('quiz'); setShowStartDimmer(true); }}
+            onBack={() => {
+              setScreen('quiz');
+              setShowStartDimmer(true);
+              setElapsedTime(0);
+            }}
           />
         )}
       </main>
