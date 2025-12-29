@@ -70,6 +70,18 @@ npm run build
 npm run preview
 ```
 
+### デプロイ
+
+このアプリはクライアントオンリーのため、以下のような静的ホスティングサービスで簡単にデプロイできます：
+
+- **GitHub Pages**: リポジトリの Settings > Pages で設定
+- **Vercel**: プロジェクトをインポートして自動デプロイ
+- **Netlify**: ドラッグ&ドロップで dist フォルダをデプロイ
+- **Cloudflare Pages**: GitHub連携で自動デプロイ
+
+ビルドコマンド: `npm run build`  
+出力ディレクトリ: `dist`
+
 ## 📱 使い方
 
 1. **問題を解く**
