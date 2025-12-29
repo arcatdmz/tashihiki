@@ -7,6 +7,7 @@ interface SettingsProps {
   setShowTimer: (show: boolean) => void
   customRange: { min: number; max: number }
   setCustomRange: (range: { min: number; max: number }) => void
+  onBack: () => void
 }
 
 function Settings({ 
@@ -15,7 +16,8 @@ function Settings({
   showTimer, 
   setShowTimer,
   customRange,
-  setCustomRange 
+  setCustomRange,
+  onBack
 }: SettingsProps) {
   const handleCustomMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 1
@@ -115,6 +117,10 @@ function Settings({
           <li>じぶんできめるをえらぶと、すきなかずのはんいにできるよ</li>
         </ul>
       </div>
+
+      <button className="back-button" onClick={onBack}>
+        ← もどる
+      </button>
     </div>
   )
 }

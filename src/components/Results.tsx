@@ -9,9 +9,10 @@ interface ResultsProps {
   wrongCount: number
   responseTimes: ResponseTime[]
   onReset: () => void
+  onBack: () => void
 }
 
-function Results({ correctCount, wrongCount, responseTimes, onReset }: ResultsProps) {
+function Results({ correctCount, wrongCount, responseTimes, onReset, onBack }: ResultsProps) {
   const totalCount = correctCount + wrongCount
   const accuracy = totalCount > 0 
     ? Math.round((correctCount / totalCount) * 100) 
@@ -95,6 +96,10 @@ function Results({ correctCount, wrongCount, responseTimes, onReset }: ResultsPr
 
       <button className="reset-button" onClick={onReset}>
         🔄 リセット
+      </button>
+
+      <button className="back-button" onClick={onBack}>
+        ← もどる
       </button>
 
       <div className="url-info">

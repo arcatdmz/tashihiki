@@ -3,13 +3,14 @@ import './App.css'
 import QuizScreen from './components/QuizScreen.tsx'
 import Settings from './components/Settings.tsx'
 import Results from './components/Results.tsx'
+import Welcome from './components/Welcome.tsx'
 
 interface ResponseTime {
   time: number
 }
 
 function App() {
-  const [screen, setScreen] = useState<'quiz' | 'settings' | 'results'>('quiz')
+  const [screen, setScreen] = useState<'welcome' | 'quiz' | 'settings' | 'results'>('welcome')
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard' | 'custom'>('easy')
   const [showTimer, setShowTimer] = useState(true)
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
@@ -26,6 +27,14 @@ function App() {
 
   const [correctCount, setCorrectCount] = useState(() => getInitialCounts().correct)
   const [wrongCount, setWrongCount] = useState(() => getInitialCounts().wrong)
+
+  // 初回起動チェック
+  useEffect(() => {
+    const started = localStorage.getItem('hasStarted')
+    if (started === 'true') {
+      setScreen('quiz')
+    }
+  }, [])
 
   // 状態が変わったらURLを更新
   useEffect(() => {
@@ -50,17 +59,34 @@ function App() {
     setResponseTimes([])
   }
 
+  const handleStart = () => {
+    localStorage.setItem('hasStarted', 'true')
+    setScreen('quiz')
+  }
+
   return (
     <div className="app">
-      <header className="app-header">
+      <header className="app-header" onClick={() => setScreen('settings')} style={{ cursor: 'pointer' }}>
         <h1>🧮 たしひき</h1>
       </header>
 
       <main className="app-main">
+        {screen === 'welcome' && (
+          <Welcome 
+            difficulty={difficulty}
+            setDifficulty={setDifficulty}
+            showTimer={showTimer}
+            setShowTimer={setShowTimer}
+            customRange={customRange}
+            setCustomRange={setCustomRange}
+            onStart={handleStart}
+          />
+        )}
         {screen === 'quiz' && (
           <QuizScreen 
             onCorrect={handleCorrectAnswer}
             onWrong={handleWrongAnswer}
+            onFinish={() => setScreen('results')}
             difficulty={difficulty}
             showTimer={showTimer}
             customRange={customRange}
@@ -74,6 +100,7 @@ function App() {
             setShowTimer={setShowTimer}
             customRange={customRange}
             setCustomRange={setCustomRange}
+            onBack={() => setScreen('quiz')}
           />
         )}
         {screen === 'results' && (
@@ -82,30 +109,10 @@ function App() {
             wrongCount={wrongCount}
             responseTimes={responseTimes}
             onReset={handleReset}
+            onBack={() => setScreen('quiz')}
           />
         )}
       </main>
-
-      <nav className="nav-buttons">
-        <button 
-          className={screen === 'quiz' ? 'active' : ''}
-          onClick={() => setScreen('quiz')}
-        >
-          もんだい
-        </button>
-        <button 
-          className={screen === 'settings' ? 'active' : ''}
-          onClick={() => setScreen('settings')}
-        >
-          せってい
-        </button>
-        <button 
-          className={screen === 'results' ? 'active' : ''}
-          onClick={() => setScreen('results')}
-        >
-          けっか
-        </button>
-      </nav>
     </div>
   )
 }

@@ -143,12 +143,32 @@
   transition: all 0.2s ease;
   touch-action: manipulation;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .reset-button:active {
   transform: scale(0.98);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: 2px solid #667eea;
+  border-radius: 15px;
+  background: white;
+  color: #667eea;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  margin-bottom: 2rem;
+}
+
+.back-button:active {
+  transform: scale(0.98);
+  background: #f0f0f0;
 }
 
 .url-info {
