@@ -199,6 +199,40 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
+.start-dimmer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.start-dimmer-button {
+  padding: 2rem 4rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.3s ease;
+}
+
+.start-dimmer-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 @keyframes scaleIn {
   from {
     opacity: 0;

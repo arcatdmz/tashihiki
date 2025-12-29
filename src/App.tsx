@@ -15,24 +15,44 @@ function App() {
   const [showTimer, setShowTimer] = useState(true)
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
   const [responseTimes, setResponseTimes] = useState<ResponseTime[]>([])
+  const [showStartDimmer, setShowStartDimmer] = useState(false)
 
   // URLクエリパラメータから初期状態を取得
-  const getInitialCounts = () => {
+  const getInitialState = () => {
     const params = new URLSearchParams(window.location.search)
+    const timesParam = params.get('times')
+    const times: ResponseTime[] = timesParam 
+      ? timesParam.split(',').map(t => ({ time: parseFloat(t) }))
+      : []
+    
     return {
       correct: parseInt(params.get('correct') || '0') || 0,
-      wrong: parseInt(params.get('wrong') || '0') || 0
+      wrong: parseInt(params.get('wrong') || '0') || 0,
+      times
     }
   }
 
-  const [correctCount, setCorrectCount] = useState(() => getInitialCounts().correct)
-  const [wrongCount, setWrongCount] = useState(() => getInitialCounts().wrong)
+  const [correctCount, setCorrectCount] = useState(() => getInitialState().correct)
+  const [wrongCount, setWrongCount] = useState(() => getInitialState().wrong)
 
   // 初回起動チェック
   useEffect(() => {
     const started = localStorage.getItem('hasStarted')
+    const initialState = getInitialState()
+    
+    // Load response times from URL
+    if (initialState.times.length > 0) {
+      setResponseTimes(initialState.times)
+    }
+    
+    // If has progress in URL, show start dimmer instead of auto-starting
     if (started === 'true') {
-      setScreen('quiz')
+      if (initialState.correct > 0 || initialState.wrong > 0) {
+        setScreen('quiz')
+        setShowStartDimmer(true)
+      } else {
+        setScreen('quiz')
+      }
     }
   }, [])
 
@@ -41,8 +61,14 @@ function App() {
     const params = new URLSearchParams()
     params.set('correct', correctCount.toString())
     params.set('wrong', wrongCount.toString())
+    
+    // Save response times to URL
+    if (responseTimes.length > 0) {
+      params.set('times', responseTimes.map(rt => rt.time.toString()).join(','))
+    }
+    
     window.history.replaceState({}, '', `?${params.toString()}`)
-  }, [correctCount, wrongCount])
+  }, [correctCount, wrongCount, responseTimes])
 
   const handleCorrectAnswer = (time: number) => {
     setCorrectCount(prev => prev + 1)
@@ -62,6 +88,16 @@ function App() {
   const handleStart = () => {
     localStorage.setItem('hasStarted', 'true')
     setScreen('quiz')
+    setShowStartDimmer(false)
+  }
+
+  const handleDimmerStart = () => {
+    setShowStartDimmer(false)
+  }
+
+  const handleBackFromSettings = () => {
+    setScreen('quiz')
+    setShowStartDimmer(true)
   }
 
   return (
@@ -90,6 +126,8 @@ function App() {
             difficulty={difficulty}
             showTimer={showTimer}
             customRange={customRange}
+            showStartDimmer={showStartDimmer}
+            onDimmerStart={handleDimmerStart}
           />
         )}
         {screen === 'settings' && (
@@ -100,7 +138,7 @@ function App() {
             setShowTimer={setShowTimer}
             customRange={customRange}
             setCustomRange={setCustomRange}
-            onBack={() => setScreen('quiz')}
+            onBack={handleBackFromSettings}
           />
         )}
         {screen === 'results' && (
@@ -109,7 +147,7 @@ function App() {
             wrongCount={wrongCount}
             responseTimes={responseTimes}
             onReset={handleReset}
-            onBack={() => setScreen('quiz')}
+            onBack={() => { setScreen('quiz'); setShowStartDimmer(true); }}
           />
         )}
       </main>

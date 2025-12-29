@@ -15,31 +15,35 @@ body {
 }
 
 #root {
-  max-width: 800px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0;
+  padding-top: 5rem; /* Space for fixed header */
 }
 
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .app-header {
   background: white;
-  padding: 1rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
-  position: sticky;
-  top: 1rem;
-  z-index: 100;
+  padding: 1rem 1.5rem;
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   transition: transform 0.2s ease;
 }
 
 .app-header:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .app-header h1 {
@@ -48,6 +52,8 @@ body {
   font-size: 1.8rem;
   margin: 0;
   user-select: none;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .app-main {
@@ -56,14 +62,34 @@ body {
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex: 1;
+  margin: 1rem;
 }
 
 @media (max-width: 768px) {
+  .app-header {
+    padding: 1rem;
+  }
+
   .app-header h1 {
     font-size: 1.5rem;
   }
   
   .app-main {
     padding: 1.5rem;
+    margin: 0.5rem;
+  }
+
+  #root {
+    padding-top: 4rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  #root {
+    max-width: 1000px;
+  }
+
+  .app-header h1 {
+    max-width: 1000px;
   }
 }

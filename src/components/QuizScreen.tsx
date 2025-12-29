@@ -15,9 +15,11 @@ interface QuizScreenProps {
   difficulty: 'easy' | 'medium' | 'hard' | 'custom'
   showTimer: boolean
   customRange: { min: number; max: number }
+  showStartDimmer: boolean
+  onDimmerStart: () => void
 }
 
-function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, customRange }: QuizScreenProps) {
+function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, customRange, showStartDimmer, onDimmerStart }: QuizScreenProps) {
   const [userAnswer, setUserAnswer] = useState('')
   const [feedback, setFeedback] = useState('')
   const [startTime, setStartTime] = useState<number | null>(null)
@@ -68,19 +70,29 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
     const newProblem = generateProblem()
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setProblem(newProblem)
-    setStartTime(Date.now())
-  }, [difficulty, customRange, generateProblem])
+    // Only start timer if not showing start dimmer
+    if (!showStartDimmer) {
+      setStartTime(Date.now())
+    }
+  }, [difficulty, customRange, generateProblem, showStartDimmer])
 
   // タイマー
   useEffect(() => {
-    if (!startTime) return
+    if (!startTime || showStartDimmer) return
 
     const interval = setInterval(() => {
       setElapsedTime(Math.floor((Date.now() - startTime) / 1000))
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [startTime])
+  }, [startTime, showStartDimmer])
+
+  // Start timer when dimmer is dismissed
+  const handleStartClick = () => {
+    onDimmerStart()
+    setStartTime(Date.now())
+    setElapsedTime(0)
+  }
 
   // 答えを確認
   const checkAnswer = () => {
@@ -190,6 +202,14 @@ function QuizScreen({ onCorrect, onWrong, onFinish, difficulty, showTimer, custo
           <div className={`feedback-overlay ${feedback.includes('🎉') ? 'correct' : 'wrong'}`}>
             {feedback}
           </div>
+        </div>
+      )}
+
+      {showStartDimmer && (
+        <div className="start-dimmer">
+          <button className="start-dimmer-button" onClick={handleStartClick}>
+            🚀 はじめる
+          </button>
         </div>
       )}
     </>
