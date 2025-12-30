@@ -225,6 +225,33 @@
   color: #666;
   word-break: break-all;
   border: 2px solid #f59e0b;
+  margin-bottom: 1rem;
+}
+
+.share-button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  touch-action: manipulation;
+}
+
+.share-button:active {
+  transform: scale(0.98);
+}
+
+.share-message {
+  margin-top: 0.8rem;
+  text-align: center;
+  color: #3b4899;
+  font-weight: bold;
+  font-size: 0.95rem;
 }
 
 @media (max-width: 768px) {
