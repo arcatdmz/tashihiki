@@ -20,7 +20,7 @@ function App() {
       }
       localStorage.setItem(progressStorageKey, JSON.stringify(progress))
       window.history.replaceState({}, '', window.location.pathname)
-      return progress
+      return { progress, fromShare: true }
     }
 
     const storedProgress = localStorage.getItem(progressStorageKey)
@@ -32,16 +32,19 @@ function App() {
           totalTime?: number
         }
         return {
-          correct: Number(parsed.correct) || 0,
-          wrong: Number(parsed.wrong) || 0,
-          totalTime: Number(parsed.totalTime) || 0,
+          progress: {
+            correct: Number(parsed.correct) || 0,
+            wrong: Number(parsed.wrong) || 0,
+            totalTime: Number(parsed.totalTime) || 0,
+          },
+          fromShare: false,
         }
       } catch {
         localStorage.removeItem(progressStorageKey)
       }
     }
 
-    return { correct: 0, wrong: 0, totalTime: 0 }
+    return { progress: { correct: 0, wrong: 0, totalTime: 0 }, fromShare: false }
   }
 
   const initialProgress = useMemo(() => getInitialProgress(), [])
@@ -77,18 +80,25 @@ function App() {
     }
   }, [screen, showStartDimmer, isFeedbackDimmer, startTime])
 
-  const [correctCount, setCorrectCount] = useState(initialProgress.correct)
-  const [wrongCount, setWrongCount] = useState(initialProgress.wrong)
+  const [correctCount, setCorrectCount] = useState(
+    initialProgress.progress.correct
+  )
+  const [wrongCount, setWrongCount] = useState(
+    initialProgress.progress.wrong
+  )
   const [totalAnswerTime, setTotalAnswerTime] = useState(
-    initialProgress.totalTime
+    initialProgress.progress.totalTime
   )
 
   useEffect(() => {
     const started = localStorage.getItem('hasStarted')
 
-    if (
+    if (initialProgress.fromShare) {
+      setScreen('results')
+    } else if (
       started === 'true' &&
-      (initialProgress.correct > 0 || initialProgress.wrong > 0)
+      (initialProgress.progress.correct > 0 ||
+        initialProgress.progress.wrong > 0)
     ) {
       setScreen('quiz')
       setShowStartDimmer(true)
