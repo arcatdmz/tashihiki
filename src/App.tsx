@@ -13,7 +13,9 @@ function App() {
   const [difficulty, setDifficulty] = useState<
     'easy' | 'medium' | 'hard' | 'custom'
   >('easy')
-  const [operatorMode, setOperatorMode] = useState<'both' | 'plus' | 'minus'>('both')
+  const [operatorMode, setOperatorMode] = useState<'both' | 'plus' | 'minus'>(
+    'both'
+  )
   const [showTimer, setShowTimer] = useState(true)
   const [customRange, setCustomRange] = useState({ min: 1, max: 10 })
   const [showStartDimmer, setShowStartDimmer] = useState(false)
