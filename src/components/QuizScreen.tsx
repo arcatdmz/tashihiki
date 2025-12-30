@@ -236,7 +236,6 @@ function QuizScreen({
             setFeedback('')
             nextProblem()
           }}
-          style={{ cursor: 'pointer' }}
         >
           <div
             className={[
@@ -253,20 +252,12 @@ function QuizScreen({
                 return (
                   <>
                     <div
-                      style={{
-                        fontSize: '4rem',
-                        textAlign: 'center',
-                        marginBottom: '0.5rem',
-                      }}
+                      className={styles['feedback-emoji']}
                     >
                       {emoji}
                     </div>
                     <div
-                      style={{
-                        fontSize: '1.5rem',
-                        textAlign: 'left',
-                        whiteSpace: 'pre-line',
-                      }}
+                      className={styles['feedback-message']}
                     >
                       {message}
                     </div>
@@ -275,11 +266,7 @@ function QuizScreen({
               } else {
                 return (
                   <div
-                    style={{
-                      fontSize: '1.5rem',
-                      textAlign: 'left',
-                      whiteSpace: 'pre-line',
-                    }}
+                    className={styles['feedback-message']}
                   >
                     {feedback}
                   </div>

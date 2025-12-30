@@ -115,31 +115,14 @@ function App() {
   return (
     <div className="app">
       <header
-        className="app-header"
+        className={`app-header ${screen === 'welcome' ? '' : 'app-header--clickable'}`}
         onClick={screen === 'welcome' ? undefined : () => setScreen('settings')}
-        style={{
-          cursor: screen === 'welcome' ? 'default' : 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
       >
-        <h1 className="app-title" style={{ margin: 0 }}>
+        <h1 className="app-title">
           🧮 たしひき
         </h1>
         {showTimer && screen === 'quiz' && (
-          <div
-            className="timer-in-header"
-            style={{
-              fontSize: '1.2rem',
-              color: '#667eea',
-              fontWeight: 'bold',
-              background: 'white',
-              padding: '0.4rem 1rem',
-              borderRadius: '20px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
-            }}
-          >
+          <div className="timer-in-header">
             ⏱️ {elapsedTime}びょう
           </div>
         )}
