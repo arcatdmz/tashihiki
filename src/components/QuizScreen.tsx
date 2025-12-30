@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import styles from './QuizScreen.module.css'
 
 interface Problem {
@@ -102,6 +102,9 @@ function QuizScreen({
     setElapsedTime(0)
   }
 
+  // ref to store timeout id for feedback dimmer
+  const feedbackTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
   const checkAnswer = () => {
     if (userAnswer === '') return
 
@@ -113,7 +116,7 @@ function QuizScreen({
     if (isCorrect) {
       setFeedback('🎉 せいかい！')
       onCorrect(responseTime)
-      setTimeout(() => {
+      feedbackTimeoutRef.current = setTimeout(() => {
         setShowDimmer(false)
         setFeedback('')
         nextProblem()
@@ -121,7 +124,7 @@ function QuizScreen({
     } else {
       setFeedback(`😓 ざんねん！こたえは ${problem.answer} だよ`)
       onWrong(responseTime)
-      setTimeout(() => {
+      feedbackTimeoutRef.current = setTimeout(() => {
         setShowDimmer(false)
         setFeedback('')
         nextProblem()
@@ -212,7 +215,20 @@ function QuizScreen({
         </button>
       </div>
       {showDimmer && (
-        <div className={styles['feedback-dimmer']}>
+        <div
+          className={styles['feedback-dimmer']}
+          onClick={() => {
+            // Cancel timeout and go to next problem immediately
+            if (feedbackTimeoutRef.current) {
+              clearTimeout(feedbackTimeoutRef.current)
+              feedbackTimeoutRef.current = null
+            }
+            setShowDimmer(false)
+            setFeedback('')
+            nextProblem()
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           <div
             className={[
               styles['feedback-overlay'],
@@ -220,7 +236,7 @@ function QuizScreen({
             ].join(' ')}
           >
             {(() => {
-              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/
+              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/ 
               const match = feedback.match(emojiRegex)
               if (match) {
                 const emoji = match[0]
