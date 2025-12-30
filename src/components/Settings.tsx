@@ -75,19 +75,19 @@ function Settings({
             className={operatorMode === 'both' ? styles.active : ''}
             onClick={() => setOperatorMode('both')}
           >
-            足し算と引き算
+            たしひき
           </button>
           <button
             className={operatorMode === 'plus' ? styles.active : ''}
             onClick={() => setOperatorMode('plus')}
           >
-            足し算だけ
+            たしざんだけ
           </button>
           <button
             className={operatorMode === 'minus' ? styles.active : ''}
             onClick={() => setOperatorMode('minus')}
           >
-            引き算だけ
+            ひきざんだけ
           </button>
         </div>
       </div>
