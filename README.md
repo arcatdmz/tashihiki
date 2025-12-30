@@ -2,6 +2,8 @@
 
 小学一年生向けの足し算と引き算を練習できるWebアプリケーションです。
 
+[![wakatime](https://wakatime.com/badge/user/cc077b43-5854-4a13-9a3f-480b1d74b2a9/project/b6a966e5-fdc5-4eda-b1b1-bf4d164c5ff6.svg)](https://wakatime.com/badge/user/cc077b43-5854-4a13-9a3f-480b1d74b2a9/project/b6a966e5-fdc5-4eda-b1b1-bf4d164c5ff6) [![Deploy to GitHub Pages](https://github.com/arcatdmz/tashihiki/actions/workflows/deploy.yml/badge.svg)](https://github.com/arcatdmz/tashihiki/actions/workflows/deploy.yml)
+
 ## 🎯 概要
 
 タッチデバイス（スマートフォン・タブレット）を使用して、楽しく算数の基礎を学べるクライアントオンリーのReactアプリです。
