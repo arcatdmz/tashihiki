@@ -3,6 +3,8 @@ import styles from './Settings.module.css'
 interface SettingsProps {
   difficulty: 'easy' | 'medium' | 'hard' | 'custom'
   setDifficulty: (difficulty: 'easy' | 'medium' | 'hard' | 'custom') => void
+  operatorMode: 'both' | 'plus' | 'minus'
+  setOperatorMode: (mode: 'both' | 'plus' | 'minus') => void
   showTimer: boolean
   setShowTimer: (show: boolean) => void
   customRange: { min: number; max: number }
@@ -13,6 +15,8 @@ interface SettingsProps {
 function Settings({
   difficulty,
   setDifficulty,
+  operatorMode,
+  setOperatorMode,
   showTimer,
   setShowTimer,
   customRange,
@@ -32,6 +36,7 @@ function Settings({
   return (
     <div className={styles.settings}>
       <h2>⚙️ せってい</h2>
+
 
       <div className={styles['setting-group']}>
         <h3>むずかしさ</h3>
@@ -59,6 +64,30 @@ function Settings({
             onClick={() => setDifficulty('custom')}
           >
             じぶんできめる
+          </button>
+        </div>
+      </div>
+
+      <div className={styles['setting-group']}>
+        <h3>もんだいのしゅるい</h3>
+        <div className={styles['difficulty-buttons']}>
+          <button
+            className={operatorMode === 'both' ? styles.active : ''}
+            onClick={() => setOperatorMode('both')}
+          >
+            足し算と引き算
+          </button>
+          <button
+            className={operatorMode === 'plus' ? styles.active : ''}
+            onClick={() => setOperatorMode('plus')}
+          >
+            足し算だけ
+          </button>
+          <button
+            className={operatorMode === 'minus' ? styles.active : ''}
+            onClick={() => setOperatorMode('minus')}
+          >
+            引き算だけ
           </button>
         </div>
       </div>

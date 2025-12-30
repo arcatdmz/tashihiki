@@ -14,6 +14,7 @@ interface QuizScreenProps {
   onFinish: () => void
   difficulty: 'easy' | 'medium' | 'hard' | 'custom'
   customRange: { min: number; max: number }
+  operatorMode: 'both' | 'plus' | 'minus'
   showStartDimmer: boolean
   onDimmerStart: () => void
   startTime: number | null
@@ -28,6 +29,7 @@ function QuizScreen({
   onFinish,
   difficulty,
   customRange,
+  operatorMode,
   showStartDimmer,
   onDimmerStart,
   startTime,
@@ -57,7 +59,14 @@ function QuizScreen({
 
   const generateProblem = useCallback((): Problem => {
     const range = getRange()
-    const operator: '+' | '-' = Math.random() > 0.5 ? '+' : '-'
+    let operator: '+' | '-'
+    if (operatorMode === 'both') {
+      operator = Math.random() > 0.5 ? '+' : '-'
+    } else if (operatorMode === 'plus') {
+      operator = '+';
+    } else {
+      operator = '-';
+    }
 
     let num1: number, num2: number
     if (operator === '+') {
@@ -71,7 +80,7 @@ function QuizScreen({
     const answer = operator === '+' ? num1 + num2 : num1 - num2
 
     return { num1, num2, operator, answer }
-  }, [getRange])
+  }, [getRange, operatorMode])
 
   const [problem, setProblem] = useState<Problem>(() => generateProblem())
 
