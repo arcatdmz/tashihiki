@@ -42,10 +42,6 @@ body {
   transition: transform 0.2s ease;
 }
 
-.app-header:hover {
-  transform: scale(1.01);
-}
-
 .app-header h1 {
   display: flex;
   align-items: center;
