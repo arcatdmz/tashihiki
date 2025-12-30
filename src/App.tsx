@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
 import QuizScreen from './components/QuizScreen'
@@ -7,6 +7,44 @@ import Settings from './components/Settings'
 import Welcome from './components/Welcome'
 
 function App() {
+  const progressStorageKey = 'tashihiki-progress'
+  const getInitialProgress = () => {
+    const params = new URLSearchParams(window.location.search)
+    const hasParams =
+      params.has('correct') || params.has('wrong') || params.has('totalTime')
+    if (hasParams) {
+      const progress = {
+        correct: parseInt(params.get('correct') || '0') || 0,
+        wrong: parseInt(params.get('wrong') || '0') || 0,
+        totalTime: parseFloat(params.get('totalTime') || '0') || 0,
+      }
+      localStorage.setItem(progressStorageKey, JSON.stringify(progress))
+      window.history.replaceState({}, '', window.location.pathname)
+      return progress
+    }
+
+    const storedProgress = localStorage.getItem(progressStorageKey)
+    if (storedProgress) {
+      try {
+        const parsed = JSON.parse(storedProgress) as {
+          correct?: number
+          wrong?: number
+          totalTime?: number
+        }
+        return {
+          correct: Number(parsed.correct) || 0,
+          wrong: Number(parsed.wrong) || 0,
+          totalTime: Number(parsed.totalTime) || 0,
+        }
+      } catch {
+        localStorage.removeItem(progressStorageKey)
+      }
+    }
+
+    return { correct: 0, wrong: 0, totalTime: 0 }
+  }
+
+  const initialProgress = useMemo(() => getInitialProgress(), [])
   const [screen, setScreen] = useState<
     'welcome' | 'quiz' | 'settings' | 'results'
   >('welcome')
@@ -22,7 +60,6 @@ function App() {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isFeedbackDimmer, setIsFeedbackDimmer] = useState(false)
-  const [totalAnswerTime, setTotalAnswerTime] = useState(0)
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
     if (
@@ -40,45 +77,35 @@ function App() {
     }
   }, [screen, showStartDimmer, isFeedbackDimmer, startTime])
 
-  const getInitialState = () => {
-    const params = new URLSearchParams(window.location.search)
-    return {
-      correct: parseInt(params.get('correct') || '0') || 0,
-      wrong: parseInt(params.get('wrong') || '0') || 0,
-      totalTime: parseFloat(params.get('totalTime') || '0') || 0,
-    }
-  }
-
-  const [correctCount, setCorrectCount] = useState(
-    () => getInitialState().correct
+  const [correctCount, setCorrectCount] = useState(initialProgress.correct)
+  const [wrongCount, setWrongCount] = useState(initialProgress.wrong)
+  const [totalAnswerTime, setTotalAnswerTime] = useState(
+    initialProgress.totalTime
   )
-  const [wrongCount, setWrongCount] = useState(() => getInitialState().wrong)
-  useEffect(() => {
-    const initialState = getInitialState()
-    setTotalAnswerTime(initialState.totalTime)
-  }, [])
 
   useEffect(() => {
     const started = localStorage.getItem('hasStarted')
-    const initialState = getInitialState()
 
     if (
       started === 'true' &&
-      (initialState.correct > 0 || initialState.wrong > 0)
+      (initialProgress.correct > 0 || initialProgress.wrong > 0)
     ) {
       setScreen('quiz')
       setShowStartDimmer(true)
     } else {
       setScreen('welcome')
     }
-  }, [])
+  }, [initialProgress])
 
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('correct', correctCount.toString())
-    params.set('wrong', wrongCount.toString())
-    params.set('totalTime', totalAnswerTime.toFixed(3))
-    window.history.replaceState({}, '', `?${params.toString()}`)
+    localStorage.setItem(
+      progressStorageKey,
+      JSON.stringify({
+        correct: correctCount,
+        wrong: wrongCount,
+        totalTime: totalAnswerTime,
+      })
+    )
   }, [correctCount, wrongCount, totalAnswerTime])
 
   const handleCorrectAnswer = (time: number) => {
@@ -182,6 +209,7 @@ function App() {
                 ? totalAnswerTime / (correctCount + wrongCount)
                 : 0
             }
+            shareUrl={`${window.location.origin}${window.location.pathname}?correct=${correctCount}&wrong=${wrongCount}&totalTime=${totalAnswerTime.toFixed(3)}`}
             onReset={handleReset}
             onBack={() => {
               setScreen('quiz')

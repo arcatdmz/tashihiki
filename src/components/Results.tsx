@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import styles from './Results.module.css'
 
 interface ResultsProps {
   correctCount: number
   wrongCount: number
   averageTime: number
+  shareUrl: string
   onReset: () => void
   onBack: () => void
 }
@@ -12,12 +14,37 @@ function Results({
   correctCount,
   wrongCount,
   averageTime,
+  shareUrl,
   onReset,
   onBack,
 }: ResultsProps) {
   const totalCount = correctCount + wrongCount
   const accuracy =
     totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0
+  const [shareMessage, setShareMessage] = useState('')
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'たしひきの進ちょく',
+          text: 'れんしゅうのけっかをシェアするよ！',
+          url: shareUrl,
+        })
+        setShareMessage('シェアできたよ！')
+        return
+      } catch {
+        setShareMessage('')
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setShareMessage('URLをコピーしたよ！')
+    } catch {
+      setShareMessage('URLをえらんでコピーしてね')
+    }
+  }
 
   const getMessage = () => {
     if (totalCount === 0) {
@@ -86,10 +113,14 @@ function Results({
       )}
 
       <div className={styles['url-info']}>
-        <p>
-          💡 このページのURLをほぞんすると、けっかをあとでみることができるよ！
-        </p>
-        <div className={styles['url-display']}>{window.location.href}</div>
+        <p>💡 このURLをほぞん・シェアすると、けっかをみんなで見られるよ！</p>
+        <div className={styles['url-display']}>{shareUrl}</div>
+        <button className={styles['share-button']} onClick={handleShare}>
+          📤 URLをシェアする
+        </button>
+        {shareMessage && (
+          <div className={styles['share-message']}>{shareMessage}</div>
+        )}
       </div>
 
       <button className={styles['reset-button']} onClick={onReset}>

@@ -1,0 +1,16 @@
+{
+  "name": "足し算・引き算れんしゅう たしひき",
+  "short_name": "たしひき",
+  "description": "たしざん・ひきざんの練習ができるシンプルなWebアプリ。",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f7ff",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "/tashihiki-favicon.png",
+      "sizes": "630x630",
+      "type": "image/png"
+    }
+  ]
+}
