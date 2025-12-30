@@ -40,6 +40,14 @@ body {
   right: 0;
   z-index: 1000;
   transition: transform 0.2s ease;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header--clickable {
+  cursor: pointer;
 }
 
 .app-header h1 {
@@ -53,6 +61,16 @@ body {
   user-select: none;
   max-width: 900px;
   margin: 0 auto;
+}
+
+.timer-in-header {
+  font-size: 1.2rem;
+  color: #667eea;
+  font-weight: bold;
+  background: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .app-main {

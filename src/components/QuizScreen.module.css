@@ -173,6 +173,7 @@
   justify-content: center;
   z-index: 900;
   animation: fadeIn 0.2s ease;
+  cursor: pointer;
 }
 
 .feedback-overlay {
@@ -195,6 +196,18 @@
   background: #f8d7da;
   color: #721c24;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-emoji {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-message {
+  font-size: 1.5rem;
+  text-align: left;
+  white-space: pre-line;
 }
 
 .start-dimmer {

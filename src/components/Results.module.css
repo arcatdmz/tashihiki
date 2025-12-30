@@ -88,22 +88,45 @@
   border-radius: 30px;
   overflow: hidden;
   position: relative;
-}
-
-.accuracy-fill {
-  height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: width 0.5s ease;
-  min-width: 60px;
+}
+
+.accuracy-progress {
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  border: none;
+  background: transparent;
 }
 
 .accuracy-text {
   color: white;
   font-weight: bold;
   font-size: 1.5rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.accuracy-progress::-webkit-progress-bar {
+  background: #e0e0e0;
+  border-radius: 30px;
+}
+
+.accuracy-progress::-webkit-progress-value {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 30px;
+  transition: width 0.5s ease;
+  min-width: 60px;
+}
+
+.accuracy-progress::-moz-progress-bar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 30px;
+  transition: width 0.5s ease;
+  min-width: 60px;
 }
 
 .average-time-section {

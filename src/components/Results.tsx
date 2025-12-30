@@ -67,12 +67,12 @@ function Results({
           <div className={styles['accuracy-section']}>
             <h3>せいかいりつ</h3>
             <div className={styles['accuracy-bar']}>
-              <div
-                className={styles['accuracy-fill']}
-                style={{ width: `${accuracy}%` }}
-              >
-                <span className={styles['accuracy-text']}>{accuracy}%</span>
-              </div>
+              <progress
+                className={styles['accuracy-progress']}
+                value={accuracy}
+                max={100}
+              />
+              <span className={styles['accuracy-text']}>{accuracy}%</span>
             </div>
             <div className={styles['accuracy-message']}>{getMessage()}</div>
           </div>
