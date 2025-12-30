@@ -23,8 +23,12 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
   setCustomRange,
 }) => {
   // 入力欄の一時値をstateで管理
-  const [minInput, setMinInput] = React.useState<string>(customRange.min.toString())
-  const [maxInput, setMaxInput] = React.useState<string>(customRange.max.toString())
+  const [minInput, setMinInput] = React.useState<string>(
+    customRange.min.toString()
+  )
+  const [maxInput, setMaxInput] = React.useState<string>(
+    customRange.max.toString()
+  )
 
   // props変更時に同期
   React.useEffect(() => {
@@ -60,10 +64,30 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
       <div className={styles['setting-group']}>
         <h3>むずかしさ</h3>
         <div className={styles['difficulty-buttons']}>
-          <button className={difficulty === 'easy' ? styles.active : ''} onClick={() => setDifficulty('easy')}>かんたん (1-10)</button>
-          <button className={difficulty === 'medium' ? styles.active : ''} onClick={() => setDifficulty('medium')}>ふつう (1-20)</button>
-          <button className={difficulty === 'hard' ? styles.active : ''} onClick={() => setDifficulty('hard')}>むずかしい (1-50)</button>
-          <button className={difficulty === 'custom' ? styles.active : ''} onClick={() => setDifficulty('custom')}>じぶんできめる</button>
+          <button
+            className={difficulty === 'easy' ? styles.active : ''}
+            onClick={() => setDifficulty('easy')}
+          >
+            かんたん (1-10)
+          </button>
+          <button
+            className={difficulty === 'medium' ? styles.active : ''}
+            onClick={() => setDifficulty('medium')}
+          >
+            ふつう (1-20)
+          </button>
+          <button
+            className={difficulty === 'hard' ? styles.active : ''}
+            onClick={() => setDifficulty('hard')}
+          >
+            むずかしい (1-50)
+          </button>
+          <button
+            className={difficulty === 'custom' ? styles.active : ''}
+            onClick={() => setDifficulty('custom')}
+          >
+            じぶんできめる
+          </button>
         </div>
       </div>
       {difficulty === 'custom' && (
@@ -85,8 +109,11 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 min="0"
                 max={customRange.max}
                 value={customRange.min}
-                onChange={e => {
-                  setCustomRange({ ...customRange, min: parseInt(e.target.value) })
+                onChange={(e) => {
+                  setCustomRange({
+                    ...customRange,
+                    min: parseInt(e.target.value),
+                  })
                 }}
                 style={{ width: '100%' }}
               />
@@ -106,8 +133,11 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 min={customRange.min}
                 max="100"
                 value={customRange.max}
-                onChange={e => {
-                  setCustomRange({ ...customRange, max: parseInt(e.target.value) })
+                onChange={(e) => {
+                  setCustomRange({
+                    ...customRange,
+                    max: parseInt(e.target.value),
+                  })
                 }}
                 style={{ width: '100%' }}
               />
@@ -118,16 +148,41 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
       <div className={styles['setting-group']}>
         <h3>もんだいのしゅるい</h3>
         <div className={styles['difficulty-buttons']}>
-          <button className={operatorMode === 'both' ? styles.active : ''} onClick={() => setOperatorMode('both')}>たしひき</button>
-          <button className={operatorMode === 'plus' ? styles.active : ''} onClick={() => setOperatorMode('plus')}>たしざんだけ</button>
-          <button className={operatorMode === 'minus' ? styles.active : ''} onClick={() => setOperatorMode('minus')}>ひきざんだけ</button>
+          <button
+            className={operatorMode === 'both' ? styles.active : ''}
+            onClick={() => setOperatorMode('both')}
+          >
+            たしひき
+          </button>
+          <button
+            className={operatorMode === 'plus' ? styles.active : ''}
+            onClick={() => setOperatorMode('plus')}
+          >
+            たしざんだけ
+          </button>
+          <button
+            className={operatorMode === 'minus' ? styles.active : ''}
+            onClick={() => setOperatorMode('minus')}
+          >
+            ひきざんだけ
+          </button>
         </div>
       </div>
       <div className={styles['setting-group']}>
         <h3>タイマー</h3>
         <div className={styles['timer-toggle']}>
-          <button className={showTimer ? styles.active : ''} onClick={() => setShowTimer(true)}>⏱️ ひょうじする</button>
-          <button className={!showTimer ? styles.active : ''} onClick={() => setShowTimer(false)}>🙈 ひょうじしない</button>
+          <button
+            className={showTimer ? styles.active : ''}
+            onClick={() => setShowTimer(true)}
+          >
+            ⏱️ ひょうじする
+          </button>
+          <button
+            className={!showTimer ? styles.active : ''}
+            onClick={() => setShowTimer(false)}
+          >
+            🙈 ひょうじしない
+          </button>
         </div>
       </div>
     </>

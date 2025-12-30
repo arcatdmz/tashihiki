@@ -147,13 +147,9 @@ function App() {
         className={`app-header ${screen === 'welcome' ? '' : 'app-header--clickable'}`}
         onClick={screen === 'welcome' ? undefined : () => setScreen('settings')}
       >
-        <h1 className="app-title">
-          🧮 たしひき
-        </h1>
+        <h1 className="app-title">🧮 たしひき</h1>
         {showTimer && screen === 'quiz' && (
-          <div className="timer-in-header">
-            ⏱️ {elapsedTime}びょう
-          </div>
+          <div className="timer-in-header">⏱️ {elapsedTime}びょう</div>
         )}
       </header>
 

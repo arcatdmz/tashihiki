@@ -63,9 +63,9 @@ function QuizScreen({
     if (operatorMode === 'both') {
       operator = Math.random() > 0.5 ? '+' : '-'
     } else if (operatorMode === 'plus') {
-      operator = '+';
+      operator = '+'
     } else {
-      operator = '-';
+      operator = '-'
     }
 
     let num1: number, num2: number
@@ -86,7 +86,7 @@ function QuizScreen({
 
   useEffect(() => {
     const newProblem = generateProblem()
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProblem(newProblem)
     if (!showStartDimmer) {
       setStartTime(Date.now())
@@ -244,32 +244,20 @@ function QuizScreen({
             ].join(' ')}
           >
             {(() => {
-              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/ 
+              const emojiRegex = /^([\uD800-\uDBFF][\uDC00-\uDFFF])/
               const match = feedback.match(emojiRegex)
               if (match) {
                 const emoji = match[0]
                 const message = feedback.replace(emoji, '').trim()
                 return (
                   <>
-                    <div
-                      className={styles['feedback-emoji']}
-                    >
-                      {emoji}
-                    </div>
-                    <div
-                      className={styles['feedback-message']}
-                    >
-                      {message}
-                    </div>
+                    <div className={styles['feedback-emoji']}>{emoji}</div>
+                    <div className={styles['feedback-message']}>{message}</div>
                   </>
                 )
               } else {
                 return (
-                  <div
-                    className={styles['feedback-message']}
-                  >
-                    {feedback}
-                  </div>
+                  <div className={styles['feedback-message']}>{feedback}</div>
                 )
               }
             })()}

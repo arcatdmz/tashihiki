@@ -24,7 +24,6 @@ function Settings({
   setCustomRange,
   onBack,
 }: SettingsProps) {
-
   return (
     <div className={styles.settings}>
       <h2>⚙️ せってい</h2>
