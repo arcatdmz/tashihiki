@@ -47,11 +47,27 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
           <div className={styles['range-inputs']}>
             <div className={styles['range-input']}>
               <label>いちばんちいさいかず</label>
-              <input type="number" min="0" max="100" value={customRange.min} onChange={handleCustomMinChange} />
+              <input type="number" min="0" max={customRange.max} value={customRange.min} onChange={handleCustomMinChange} />
+              <input
+                type="range"
+                min="0"
+                max={customRange.max}
+                value={customRange.min}
+                onChange={handleCustomMinChange}
+                style={{ width: '100%' }}
+              />
             </div>
             <div className={styles['range-input']}>
               <label>いちばんおおきいかず</label>
-              <input type="number" min="1" max="100" value={customRange.max} onChange={handleCustomMaxChange} />
+              <input type="number" min={customRange.min} max="100" value={customRange.max} onChange={handleCustomMaxChange} />
+              <input
+                type="range"
+                min={customRange.min}
+                max="100"
+                value={customRange.max}
+                onChange={handleCustomMaxChange}
+                style={{ width: '100%' }}
+              />
             </div>
           </div>
         </div>
