@@ -38,7 +38,6 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
-  transition: transform 0.2s ease;
   cursor: default;
   display: flex;
   align-items: center;
@@ -50,16 +49,12 @@ body {
 }
 
 .app-header h1 {
-  display: flex;
-  align-items: center;
-  gap: 0;
   text-align: left;
   color: #fff;
   font-size: 1.2rem;
   margin: 0;
   user-select: none;
   max-width: 900px;
-  margin: 0 auto;
 }
 
 .timer-in-header {
