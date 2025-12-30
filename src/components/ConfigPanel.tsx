@@ -41,14 +41,6 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
           <button className={difficulty === 'custom' ? styles.active : ''} onClick={() => setDifficulty('custom')}>じぶんできめる</button>
         </div>
       </div>
-      <div className={styles['setting-group']}>
-        <h3>もんだいのしゅるい</h3>
-        <div className={styles['difficulty-buttons']}>
-          <button className={operatorMode === 'both' ? styles.active : ''} onClick={() => setOperatorMode('both')}>たしひき</button>
-          <button className={operatorMode === 'plus' ? styles.active : ''} onClick={() => setOperatorMode('plus')}>たしざんだけ</button>
-          <button className={operatorMode === 'minus' ? styles.active : ''} onClick={() => setOperatorMode('minus')}>ひきざんだけ</button>
-        </div>
-      </div>
       {difficulty === 'custom' && (
         <div className={`${styles['setting-group']} ${styles['custom-range']}`}>
           <h3>かずのはんい</h3>
@@ -64,6 +56,14 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
           </div>
         </div>
       )}
+      <div className={styles['setting-group']}>
+        <h3>もんだいのしゅるい</h3>
+        <div className={styles['difficulty-buttons']}>
+          <button className={operatorMode === 'both' ? styles.active : ''} onClick={() => setOperatorMode('both')}>たしひき</button>
+          <button className={operatorMode === 'plus' ? styles.active : ''} onClick={() => setOperatorMode('plus')}>たしざんだけ</button>
+          <button className={operatorMode === 'minus' ? styles.active : ''} onClick={() => setOperatorMode('minus')}>ひきざんだけ</button>
+        </div>
+      </div>
       <div className={styles['setting-group']}>
         <h3>タイマー</h3>
         <div className={styles['timer-toggle']}>
