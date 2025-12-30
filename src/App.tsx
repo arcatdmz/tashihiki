@@ -96,6 +96,7 @@ function App() {
 
   const handleStart = () => {
     localStorage.setItem('hasStarted', 'true')
+    window.scrollTo(0, 0)
     setScreen('quiz')
     setShowStartDimmer(false)
   }
