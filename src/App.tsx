@@ -150,6 +150,8 @@ function App() {
           <Welcome
             difficulty={difficulty}
             setDifficulty={setDifficulty}
+            operatorMode={operatorMode}
+            setOperatorMode={setOperatorMode}
             showTimer={showTimer}
             setShowTimer={setShowTimer}
             customRange={customRange}
