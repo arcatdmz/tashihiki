@@ -86,7 +86,7 @@ function QuizScreen({
 
   useEffect(() => {
     const newProblem = generateProblem()
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+  // eslint-disable-next-line react-hooks/set-state-in-effect
     setProblem(newProblem)
     if (!showStartDimmer) {
       setStartTime(Date.now())
@@ -111,7 +111,7 @@ function QuizScreen({
     setElapsedTime(0)
   }
 
-  // ref to store timeout id for feedback dimmer
+  // フィードバック用dimmerのタイムアウトIDを保持するref
   const feedbackTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const checkAnswer = () => {
@@ -227,7 +227,7 @@ function QuizScreen({
         <div
           className={styles['feedback-dimmer']}
           onClick={() => {
-            // Cancel timeout and go to next problem immediately
+            // タイムアウトをキャンセルして即座に次の問題へ進む
             if (feedbackTimeoutRef.current) {
               clearTimeout(feedbackTimeoutRef.current)
               feedbackTimeoutRef.current = null

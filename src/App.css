@@ -1,4 +1,3 @@
-/* --- 追加: タイトル白地ボックスとそろばんアイコン --- */
 * {
   margin: 0;
   padding: 0;
@@ -20,7 +19,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 0;
-  padding-top: 5rem; /* Space for fixed header */
+  padding-top: 5rem;
 }
 
 .app {

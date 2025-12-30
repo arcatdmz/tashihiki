@@ -24,8 +24,6 @@ function Settings({
   setCustomRange,
   onBack,
 }: SettingsProps) {
-  // ...existing code...
-
 
   return (
     <div className={styles.settings}>
