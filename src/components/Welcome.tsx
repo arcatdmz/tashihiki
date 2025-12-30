@@ -31,9 +31,11 @@ function Welcome({
           <h2>👋 ようこそ！</h2>
           <p>
             たしひきアプリへようこそ！
-            <br />
             たしざんとひきざんのれんしゅうができるよ。
           </p>
+          <button className="start-button" onClick={onStart}>
+            🚀 はじめる
+          </button>
         </div>
         <div className="welcome-settings">
           <h3>⚙️ せってい</h3>
@@ -49,9 +51,6 @@ function Welcome({
           />
         </div>
       </div>
-      <button className="start-button" onClick={onStart}>
-        🚀 はじめる
-      </button>
     </div>
   )
 }

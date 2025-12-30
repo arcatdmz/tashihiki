@@ -85,6 +85,13 @@ function Results({
         </>
       )}
 
+      <div className={styles['url-info']}>
+        <p>
+          💡 このページのURLをほぞんすると、けっかをあとでみることができるよ！
+        </p>
+        <div className={styles['url-display']}>{window.location.href}</div>
+      </div>
+
       <button className={styles['reset-button']} onClick={onReset}>
         🔄 リセット
       </button>
@@ -92,13 +99,6 @@ function Results({
       <button className={styles['back-button']} onClick={onBack}>
         ← もどる
       </button>
-
-      <div className={styles['url-info']}>
-        <p>
-          💡 このページのURLをほぞんすると、けっかをあとでみることができるよ！
-        </p>
-        <div className={styles['url-display']}>{window.location.href}</div>
-      </div>
     </div>
   )
 }

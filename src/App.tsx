@@ -116,9 +116,9 @@ function App() {
     <div className="app">
       <header
         className="app-header"
-        onClick={() => setScreen('settings')}
+        onClick={screen === 'welcome' ? undefined : () => setScreen('settings')}
         style={{
-          cursor: 'pointer',
+          cursor: screen === 'welcome' ? 'default' : 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
